@@ -10,11 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
-import rs.raf.projekat_jun_lazar_bojanic_11621.database.FoodgeDatabaseHelper;
 import rs.raf.projekat_jun_lazar_bojanic_11621.model.ServiceUser;
+import rs.raf.projekat_jun_lazar_bojanic_11621.repository.implementation.ServiceUserRepository;
 
 public class LoginAndRegisterActivity extends AppCompatActivity {
 
@@ -47,55 +49,56 @@ public class LoginAndRegisterActivity extends AppCompatActivity {
     private void initListeners(){
         buttonRegister.setOnClickListener(view -> {
             try{
-                ServiceUser serviceUser = new ServiceUser(-1, editTextEmail.getText().toString(), editTextUsername.getText().toString(), editTextPass.getText().toString());
+                ServiceUser serviceUser = new ServiceUser(null, editTextEmail.getText().toString(), editTextUsername.getText().toString(), editTextPass.getText().toString());
+                ServiceUserRepository.getInstance(this).register(serviceUser)
+                        .subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
 
-                Completable registrationCompletable = FoodgeDatabaseHelper.getInstance(this).registerUser(this, serviceUser);
-
-                registrationCompletable.subscribe(
-                        () -> {
-                            Log.i(getResources().getString(R.string.foodgeTag), "Registration Successful.");
-                            Toast.makeText(this, "Registration Successful.", Toast.LENGTH_SHORT).show();
-                        },
-                        error -> {
-                            Log.i(getResources().getString(R.string.foodgeTag), "Registration Failed. " + error.getMessage());
-                            Toast.makeText(this, "Registration Failed.", Toast.LENGTH_SHORT).show();
-                        }
-                ).dispose();
-
-
-
-
-                /*if(FoodgeDatabaseHelper.getInstance(this).registerUser(this, serviceUser)){
-                    Log.i(getResources().getString(R.string.foodgeTag), "Registration Successful.");
-                    Toast.makeText(this, "Registration Successful.", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    Log.i(getResources().getString(R.string.foodgeTag), "Registration Failed.");
-                    Toast.makeText(this, "Registration Failed.", Toast.LENGTH_SHORT).show();
-                }*/
+                            }
+                            @Override
+                            public void onComplete() {
+                                Log.i(getResources().getString(R.string.foodgeTag), "Registration successful.");
+                                Toast.makeText(getApplicationContext(), "Registration successful.", Toast.LENGTH_SHORT).show();
+                            }
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                Log.e(getResources().getString(R.string.foodgeTag), e.getMessage());
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
             catch(Exception e){
-                Log.i(getResources().getString(R.string.foodgeTag), "Registration Failed. " + e.getMessage());
-                Toast.makeText(this, "Registration Failed. " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(getResources().getString(R.string.foodgeTag), e.getMessage());
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
         buttonLogin.setOnClickListener(view -> {
             try{
-                ServiceUser serviceUser = new ServiceUser(-1, editTextEmail.getText().toString(), editTextUsername.getText().toString(), editTextPass.getText().toString());
-                if(FoodgeDatabaseHelper.getInstance(this).loginUser(this, serviceUser)){
-                    /*Log.i(getResources().getString(R.string.foodgeTag), "Login Successful.");
-                    Toast.makeText(this, "Login Successful.", Toast.LENGTH_SHORT).show();*/
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
-                }
-                else{
-                    /*Log.i(getResources().getString(R.string.foodgeTag), "Login Failed.");
-                    Toast.makeText(this, "Login Failed.", Toast.LENGTH_SHORT).show();*/
-                }
+                ServiceUser serviceUser = new ServiceUser(null, editTextEmail.getText().toString(), editTextUsername.getText().toString(), editTextPass.getText().toString());
+                ServiceUserRepository.getInstance(this).login(this, serviceUser)
+                        .subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+
+                            }
+                            @Override
+                            public void onComplete() {
+                                Log.i(getResources().getString(R.string.foodgeTag), "Login successful.");
+                                Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LoginAndRegisterActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                Log.e(getResources().getString(R.string.foodgeTag), e.getMessage());
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
             catch(Exception e){
-                Log.i(getResources().getString(R.string.foodgeTag), "Login Failed. " + e.getMessage());
-                Toast.makeText(this, "Login Failed. " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(getResources().getString(R.string.foodgeTag), e.getMessage());
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

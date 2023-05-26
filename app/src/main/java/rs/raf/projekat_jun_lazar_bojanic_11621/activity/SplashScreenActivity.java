@@ -4,17 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
-import rs.raf.projekat_jun_lazar_bojanic_11621.database.FoodgeDatabase;
-import rs.raf.projekat_jun_lazar_bojanic_11621.database.FoodgeDatabaseHelper;
 import rs.raf.projekat_jun_lazar_bojanic_11621.model.ServiceUser;
-import rs.raf.projekat_jun_lazar_bojanic_11621.util.Util;
+import rs.raf.projekat_jun_lazar_bojanic_11621.repository.implementation.ServiceUserRepository;
 
 public class SplashScreenActivity extends AppCompatActivity {
     @Override
@@ -27,31 +25,33 @@ public class SplashScreenActivity extends AppCompatActivity {
     public void initSplashScreen(){
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         splashScreen.setKeepOnScreenCondition(() -> {
-            try {
+            try{
                 Thread.sleep(500);
-                ServiceUser serviceUser = Util.getUserSharedPreference(this);
-                if(serviceUser != null){
-                    if(FoodgeDatabaseHelper.getInstance(this).loginUserWithSharedPreferences(this, serviceUser)){
-                        Intent intent = new Intent(this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                    else{
-                        Intent intent = new Intent(this, LoginAndRegisterActivity.class);
-                        startActivity(intent);
-                    }
-                }
-                else{
-                    Log.i(getResources().getString(R.string.foodgeTag), "Login failed. Shared preference doesn't exist.");
-                    Toast.makeText(this, "Login failed. Shared preference doesn't exist.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this, LoginAndRegisterActivity.class);
-                    startActivity(intent);
-                }
+                ServiceUserRepository.getInstance(this).loginWithSharedPreferences(this)
+                        .subscribe(new CompletableObserver() {
+                            @Override
+                            public void onSubscribe(@NonNull Disposable d) {
+
+                            }
+                            @Override
+                            public void onComplete() {
+                                Log.i(getResources().getString(R.string.foodgeTag),"Login successful.");
+                                Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                Log.e(getResources().getString(R.string.foodgeTag), e.getMessage());
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(SplashScreenActivity.this, LoginAndRegisterActivity.class);
+                                startActivity(intent);
+                            }
+                        });
             }
-            catch (Exception e) {
-                Log.i(getResources().getString(R.string.foodgeTag), "Login Failed. " + e.getMessage());
-                Toast.makeText(this, "Login failed. " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, LoginAndRegisterActivity.class);
-                startActivity(intent);
+            catch(Exception e){
+                Log.e(getResources().getString(R.string.foodgeTag), e.getMessage());
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
             return false;
         });

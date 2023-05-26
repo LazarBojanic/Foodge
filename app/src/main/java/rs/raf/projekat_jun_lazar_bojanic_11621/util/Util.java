@@ -9,8 +9,10 @@ import android.widget.Toast;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import io.reactivex.rxjava3.core.Completable;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
 import rs.raf.projekat_jun_lazar_bojanic_11621.app.FoodgeApp;
+import rs.raf.projekat_jun_lazar_bojanic_11621.exception.ValidationException;
 import rs.raf.projekat_jun_lazar_bojanic_11621.model.ServiceUser;
 
 public class Util {
@@ -21,16 +23,13 @@ public class Util {
             if(sharedPreferences != null){
                 if(sharedPreferences.contains(context.getResources().getString(R.string.userSharedPreference))){
                     String serviceUserJson = sharedPreferences.getString(context.getResources().getString(R.string.userSharedPreference),  "USER_SP_UNAVAILABLE");
-                    Log.i(context.getResources().getString(R.string.foodgeTag), serviceUserJson);
                     return Serializer.deserialize(serviceUserJson, ServiceUser.class);
                 }
                 else{
-                    Log.i(context.getResources().getString(R.string.foodgeTag), "USER_SP Shared Preference doesn't exist");
                     return null;
                 }
             }
             else{
-                Log.i(context.getResources().getString(R.string.foodgeTag), "Shared Preferences null");
                 return null;
             }
         }
@@ -47,7 +46,6 @@ public class Util {
                 return true;
             }
             else{
-                Log.i(context.getResources().getString(R.string.foodgeTag), "Shared Preferences null");
                 return false;
             }
         }
@@ -63,69 +61,50 @@ public class Util {
                 return true;
             }
             else{
-                Log.i(context.getResources().getString(R.string.foodgeTag), "Shared Preferences null");
                 return false;
             }
         }
     }
-    public static boolean passwordIsValid(Context context, String pass) {
-        if(!pass.equals("")){
-            if(pass.length() >= 5){
-                String specialCharacters = "~#^|$%&*!";
-                for (int i = 0; i < pass.length(); i++) {
-                    if (specialCharacters.contains(String.valueOf(pass.charAt(i)))) {
-                        Toast.makeText(context, "Error6", Toast.LENGTH_SHORT).show();
-                        Log.i(context.getResources().getString(R.string.foodgeTag), "Error6");
-                        return false;
-                    }
-                }
+    public static boolean passwordIsValid(String pass) {
+        try{
+            return pass.length() >= 4;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+    public static boolean validateUserData(ServiceUser serviceUser, boolean usingSharedPreferences) {
+        try {
+            if (serviceUser.getEmail().isEmpty()) {
+                return false;
+            }
+            if (serviceUser.getUsername().isEmpty()) {
+                return false;
+            }
+            if (!usingSharedPreferences) {
+                return passwordIsValid(serviceUser.getPass());
+            } else {
                 return true;
             }
-            else{
-                Log.i(context.getResources().getString(R.string.foodgeTag), "Error7");
-                Toast.makeText(context, "Error7", Toast.LENGTH_SHORT).show();
-                Toast.makeText(context, "Password must have at least 5 characters", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        }
-        else{
-            Log.i(context.getResources().getString(R.string.foodgeTag), "Error8");
-            Toast.makeText(context, "Error8", Toast.LENGTH_SHORT).show();
-            Toast.makeText(context, "Password cannot be empty", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
             return false;
         }
     }
-    public static boolean validateUserData(Context context, ServiceUser serviceUser, boolean usingSharedPreferences){
-        Log.i(context.getResources().getString(R.string.foodgeTag), "in data validation" + serviceUser.toString());
-        if(serviceUser.getEmail().equals("")){
-            Toast.makeText(context, "Email cannot be empty", Toast.LENGTH_SHORT).show();
-            Log.i(context.getResources().getString(R.string.foodgeTag), "data validation email empty");
-            return false;
-        }
-        if(serviceUser.getUsername().equals("")){
-            Log.i(context.getResources().getString(R.string.foodgeTag), "data validation username empty" + serviceUser.toString());
-            Toast.makeText(context, "Username cannot be empty", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if(!usingSharedPreferences){
-            return passwordIsValid(context, serviceUser.getPass());
-        }
-        else{
-            return true;
-        }
-    }
-    public static boolean checkPasswordValidityWhenChanging(Context context, Integer id, String oldPass, String newPass, String confirmNewPass){
-        if(newPass.equals(confirmNewPass)){
-            if(!oldPass.equals(newPass)){
-                return passwordIsValid(context, newPass);
+    public static boolean checkPasswordValidityWhenChanging(Integer id, String oldPass, String newPass, String confirmNewPass) {
+        try {
+            if(newPass.equals(confirmNewPass)){
+                if(!oldPass.equals(newPass)){
+                    return passwordIsValid(newPass);
+                }
+                else{
+                    return false;
+                }
             }
             else{
-                Toast.makeText(context, "New password must be different from old password", Toast.LENGTH_SHORT).show();
                 return false;
             }
         }
-        else{
-            Toast.makeText(context, "New password not incorrectly confirmed", Toast.LENGTH_SHORT).show();
+        catch (Exception e){
             return false;
         }
     }
