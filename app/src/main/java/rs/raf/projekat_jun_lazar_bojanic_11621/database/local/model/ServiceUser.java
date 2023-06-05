@@ -1,4 +1,4 @@
-package rs.raf.projekat_jun_lazar_bojanic_11621.model;
+package rs.raf.projekat_jun_lazar_bojanic_11621.database.local.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

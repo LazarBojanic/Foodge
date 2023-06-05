@@ -11,8 +11,9 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
-import rs.raf.projekat_jun_lazar_bojanic_11621.model.ServiceUser;
-import rs.raf.projekat_jun_lazar_bojanic_11621.repository.implementation.ServiceUserRepository;
+import rs.raf.projekat_jun_lazar_bojanic_11621.app.FoodgeApp;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.implementation.ServiceUserService;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.specification.IServiceUserService;
 
 public class SplashScreenActivity extends AppCompatActivity {
     @Override
@@ -27,7 +28,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         splashScreen.setKeepOnScreenCondition(() -> {
             try{
                 Thread.sleep(500);
-                ServiceUserRepository.getInstance(this).loginWithSharedPreferences(this)
+                IServiceUserService serviceUserService = FoodgeApp.getInstance().getFoodgeAppComponent().getServiceUserService();
+                serviceUserService.loginWithSharedPreferences()
                         .subscribe(new CompletableObserver() {
                             @Override
                             public void onSubscribe(@NonNull Disposable d) {

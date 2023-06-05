@@ -11,12 +11,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
-import rs.raf.projekat_jun_lazar_bojanic_11621.model.ServiceUser;
-import rs.raf.projekat_jun_lazar_bojanic_11621.repository.implementation.ServiceUserRepository;
+import rs.raf.projekat_jun_lazar_bojanic_11621.app.FoodgeApp;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.model.ServiceUser;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.repository.ServiceUserDao;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.implementation.ServiceUserService;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.specification.IServiceUserService;
 
 public class LoginAndRegisterActivity extends AppCompatActivity {
 
@@ -50,7 +52,8 @@ public class LoginAndRegisterActivity extends AppCompatActivity {
         buttonRegister.setOnClickListener(view -> {
             try{
                 ServiceUser serviceUser = new ServiceUser(null, editTextEmail.getText().toString(), editTextUsername.getText().toString(), editTextPass.getText().toString());
-                ServiceUserRepository.getInstance(this).register(serviceUser)
+                IServiceUserService serviceUserService = FoodgeApp.getInstance().getFoodgeAppComponent().getServiceUserService();
+                serviceUserService.register(serviceUser)
                         .subscribe(new CompletableObserver() {
                             @Override
                             public void onSubscribe(@NonNull Disposable d) {
@@ -76,7 +79,8 @@ public class LoginAndRegisterActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(view -> {
             try{
                 ServiceUser serviceUser = new ServiceUser(null, editTextEmail.getText().toString(), editTextUsername.getText().toString(), editTextPass.getText().toString());
-                ServiceUserRepository.getInstance(this).login(this, serviceUser)
+                IServiceUserService serviceUserService = FoodgeApp.getInstance().getFoodgeAppComponent().getServiceUserService();
+                serviceUserService.login(serviceUser)
                         .subscribe(new CompletableObserver() {
                             @Override
                             public void onSubscribe(@NonNull Disposable d) {

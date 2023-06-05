@@ -2,23 +2,27 @@ package rs.raf.projekat_jun_lazar_bojanic_11621.app;
 
 import android.app.Application;
 
-import androidx.room.Room;
-
-import rs.raf.projekat_jun_lazar_bojanic_11621.R;
-import rs.raf.projekat_jun_lazar_bojanic_11621.database.FoodgeDatabase;
-import rs.raf.projekat_jun_lazar_bojanic_11621.util.Util;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.dagger.DaggerFoodgeAppComponent;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.dagger.FoodgeAppComponent;
 
 public class FoodgeApp extends Application {
+    private FoodgeAppComponent foodgeAppComponent;
+    private static FoodgeApp instance;
     public static final Object lock = new Object();
     @Override
     public void onCreate(){
         super.onCreate();
-        synchronized (lock){
-            initDatabase();
-            getSharedPreferences(getResources().getString(R.string.foodgeSharedPreferences), MODE_PRIVATE);
-        }
+        instance = this;
+        foodgeAppComponent = DaggerFoodgeAppComponent.create();
     }
-    private void initDatabase(){
-        FoodgeDatabase.getInstance(this);
+
+    public static FoodgeApp getInstance(){
+        if(instance == null){
+            instance = new FoodgeApp();
+        }
+        return instance;
+    }
+    public FoodgeAppComponent getFoodgeAppComponent(){
+        return this.foodgeAppComponent;
     }
 }
