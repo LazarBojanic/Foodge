@@ -1,12 +1,10 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.database.local;
 
-import android.content.Context;
-
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import rs.raf.projekat_jun_lazar_bojanic_11621.app.FoodgeApp;
+import rs.raf.projekat_jun_lazar_bojanic_11621.FoodgeApp;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.repository.ServiceUserDao;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.model.ServiceUser;
 

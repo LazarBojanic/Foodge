@@ -23,33 +23,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        /*NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.navHostFragment);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.navHostFragment);
         if(navHostFragment != null){
             navController = navHostFragment.getNavController();
         }
-        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+        /*NavigationUI.setupWithNavController(bottomNavigationView, navController);
         navController.addOnDestinationChangedListener((navController1, navDestination, bundle) -> {
-             navController1.navigate(navDestination.getRoute());
+            navController1.navigate(navDestination.getRoute());
         });*/
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int itemId = item.getItemId();
-                if(itemId == R.id.itemFoods){
-                    navController.navigate(R.id.fragmentFoods);
-                    return true;
-                }
-                else if(itemId == R.id.itemHome){
-                    navController.navigate(R.id.fragmentHome);
-                    return true;
-                }
-                else if(itemId == R.id.itemStats){
-                    navController.navigate(R.id.fragmentStats);
-                    return true;
-                }
-                else{
-                    return false;
-                }
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if(itemId == R.id.itemFoods){
+                navController.navigate(R.id.fragmentFoods);
+                return true;
+            }
+            else if(itemId == R.id.itemHome){
+                navController.navigate(R.id.fragmentHome);
+                return true;
+            }
+            else if(itemId == R.id.itemStats){
+                navController.navigate(R.id.fragmentStats);
+                return true;
+            }
+            else{
+                return false;
             }
         });
     }

@@ -1,4 +1,4 @@
-package rs.raf.projekat_jun_lazar_bojanic_11621.app;
+package rs.raf.projekat_jun_lazar_bojanic_11621;
 
 import android.app.Application;
 
@@ -8,12 +8,11 @@ import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.dagger.FoodgeAppCo
 public class FoodgeApp extends Application {
     private FoodgeAppComponent foodgeAppComponent;
     private static FoodgeApp instance;
-    public static final Object lock = new Object();
     @Override
     public void onCreate(){
         super.onCreate();
-        instance = this;
         foodgeAppComponent = DaggerFoodgeAppComponent.create();
+        instance = this;
     }
 
     public static FoodgeApp getInstance(){

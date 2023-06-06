@@ -1,14 +1,9 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.implementation;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import java.util.NoSuchElementException;
-import java.util.function.Function;
 
 import javax.inject.Inject;
 
@@ -18,8 +13,7 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
-import rs.raf.projekat_jun_lazar_bojanic_11621.app.FoodgeApp;
-import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.FoodgeDatabase;
+import rs.raf.projekat_jun_lazar_bojanic_11621.FoodgeApp;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.model.ServiceUser;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.repository.ServiceUserDao;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.specification.IServiceUserService;
@@ -40,19 +34,15 @@ public class ServiceUserService implements IServiceUserService {
         return serviceUserDao.getByEmail(serviceUser.getEmail())
                 .flatMapCompletable(existingUser -> Completable.error(new RegistrationException("Email already taken")))
                 .onErrorResumeNext(error -> {
-                    if (error instanceof NoSuchElementException) {
-                        if (!validateData(serviceUser)) {
-                            return Completable.error(new RegistrationException("Invalid user data"));
-                        }
-
-                        String hashedPassword = hashPassword(serviceUser.getPass());
-                        serviceUser.setPass(hashedPassword);
-
-                        return serviceUserDao.insert(serviceUser)
-                                .ignoreElement();
-                    } else {
-                        return Completable.error(error);
+                    if (!validateData(serviceUser)) {
+                        return Completable.error(new RegistrationException("Invalid user data"));
                     }
+
+                    String hashedPassword = hashPassword(serviceUser.getPass());
+                    serviceUser.setPass(hashedPassword);
+
+                    return serviceUserDao.insert(serviceUser)
+                            .ignoreElement();
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
