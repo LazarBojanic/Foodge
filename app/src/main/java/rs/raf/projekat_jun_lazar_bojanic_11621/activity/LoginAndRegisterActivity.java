@@ -17,6 +17,7 @@ import rs.raf.projekat_jun_lazar_bojanic_11621.R;
 import rs.raf.projekat_jun_lazar_bojanic_11621.FoodgeApp;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.model.ServiceUser;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.implementation.ServiceUserService;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.specification.IServiceUserService;
 
 public class LoginAndRegisterActivity extends AppCompatActivity {
 
@@ -50,8 +51,8 @@ public class LoginAndRegisterActivity extends AppCompatActivity {
         buttonRegister.setOnClickListener(view -> {
             try{
                 ServiceUser serviceUser = new ServiceUser(null, editTextEmail.getText().toString(), editTextUsername.getText().toString(), editTextPass.getText().toString());
-                FoodgeApp foodgeApp = (FoodgeApp) getApplicationContext();
-                ServiceUserService serviceUserService = foodgeApp.getFoodgeAppComponent().getServiceUserService();
+                FoodgeApp foodgeApp = (FoodgeApp) getApplication();
+                IServiceUserService serviceUserService = foodgeApp.getLocalAppComponent().getServiceUserService();
                 serviceUserService.register(serviceUser)
                         .subscribe(new CompletableObserver() {
                             @Override
@@ -78,8 +79,8 @@ public class LoginAndRegisterActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(view -> {
             try{
                 ServiceUser serviceUser = new ServiceUser(null, editTextEmail.getText().toString(), editTextUsername.getText().toString(), editTextPass.getText().toString());
-                FoodgeApp foodgeApp = (FoodgeApp) getApplicationContext();
-                ServiceUserService serviceUserService = foodgeApp.getFoodgeAppComponent().getServiceUserService();
+                FoodgeApp foodgeApp = (FoodgeApp) getApplication();
+                IServiceUserService serviceUserService = foodgeApp.getLocalAppComponent().getServiceUserService();
                 serviceUserService.login(serviceUser)
                         .subscribe(new CompletableObserver() {
                             @Override

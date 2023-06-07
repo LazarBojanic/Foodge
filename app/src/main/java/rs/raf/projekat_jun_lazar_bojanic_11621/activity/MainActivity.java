@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener((navController1, navDestination, bundle) -> {
             navController1.navigate(navDestination.getRoute());
         });*/
+        navController.navigate(R.id.fragmentHome);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if(itemId == R.id.itemFoods){

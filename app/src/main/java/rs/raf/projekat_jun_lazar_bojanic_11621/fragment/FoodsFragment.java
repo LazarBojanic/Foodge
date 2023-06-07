@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
+import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.FoodsViewModel;
 
 public class FoodsFragment extends Fragment {
 
