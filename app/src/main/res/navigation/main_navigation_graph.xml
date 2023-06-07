@@ -1,45 +1,45 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:id="@+id/mainNavigationGraph"
-app:startDestination="@id/fragmentHome">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainNavigationGraph"
+    app:startDestination="@id/fragmentHome">
 
-<fragment
-    android:id="@+id/fragmentFoods"
-    android:name="rs.raf.projekat_jun_lazar_bojanic_11621.fragment.FoodsFragment"
-    android:label="Foods Fragment"
-    tools:layout="@layout/fragment_foods" >
-    <action
-        android:id="@+id/action_fragmentFoods_to_fragmentHome"
-        app:destination="@id/fragmentHome" />
-    <action
-        android:id="@+id/action_fragmentFoods_to_fragmentStats"
-        app:destination="@id/fragmentStats" />
-</fragment>
+    <fragment
+        android:id="@+id/fragmentFoods"
+        android:name="rs.raf.projekat_jun_lazar_bojanic_11621.fragment.FoodsFragment"
+        android:label="Foods Fragment"
+        tools:layout="@layout/fragment_foods">
+        <action
+            android:id="@+id/action_fragmentFoods_to_fragmentHome"
+            app:destination="@id/fragmentHome" />
+        <action
+            android:id="@+id/action_fragmentFoods_to_fragmentStats"
+            app:destination="@id/fragmentStats" />
+    </fragment>
 
-<fragment
-    android:id="@+id/fragmentHome"
-    android:name="rs.raf.projekat_jun_lazar_bojanic_11621.fragment.HomeFragment"
-    android:label="Home Fragment"
-    tools:layout="@layout/fragment_home" >
-    <action
-        android:id="@+id/action_fragmentHome_to_fragmentStats"
-        app:destination="@id/fragmentStats" />
-    <action
-        android:id="@+id/action_fragmentHome_to_fragmentFoods"
-        app:destination="@id/fragmentFoods" />
-</fragment>
+    <fragment
+        android:id="@+id/fragmentHome"
+        android:name="rs.raf.projekat_jun_lazar_bojanic_11621.fragment.HomeFragment"
+        android:label="Home Fragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentStats"
+            app:destination="@id/fragmentStats" />
+        <action
+            android:id="@+id/action_fragmentHome_to_fragmentFoods"
+            app:destination="@id/fragmentFoods" />
+    </fragment>
 
-<fragment
-    android:id="@+id/fragmentStats"
-    android:name="rs.raf.projekat_jun_lazar_bojanic_11621.fragment.StatsFragment"
-    android:label="Stats Fragment"
-    tools:layout="@layout/fragment_stats" >
-    <action
-        android:id="@+id/action_fragmentStats_to_fragmentHome"
-        app:destination="@id/fragmentHome" />
-    <action
-        android:id="@+id/action_fragmentStats_to_fragmentFoods"
-        app:destination="@id/fragmentFoods" />
-</fragment>
+    <fragment
+        android:id="@+id/fragmentStats"
+        android:name="rs.raf.projekat_jun_lazar_bojanic_11621.fragment.StatsFragment"
+        android:label="Stats Fragment"
+        tools:layout="@layout/fragment_stats">
+        <action
+            android:id="@+id/action_fragmentStats_to_fragmentHome"
+            app:destination="@id/fragmentHome" />
+        <action
+            android:id="@+id/action_fragmentStats_to_fragmentFoods"
+            app:destination="@id/fragmentFoods" />
+    </fragment>
 </navigation>

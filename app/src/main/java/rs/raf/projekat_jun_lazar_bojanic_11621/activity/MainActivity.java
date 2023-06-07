@@ -3,6 +3,7 @@ package rs.raf.projekat_jun_lazar_bojanic_11621.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -31,7 +32,11 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener((navController1, navDestination, bundle) -> {
             navController1.navigate(navDestination.getRoute());
         });*/
+        NavGraph navGraph = navController.getGraph();
+        navGraph.setStartDestination(R.id.fragmentHome);
+        navController.setGraph(navGraph);
         navController.navigate(R.id.fragmentHome);
+        bottomNavigationView.setSelectedItemId(R.id.itemHome);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if(itemId == R.id.itemFoods){
