@@ -48,15 +48,15 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.MealVi
     }
 
     static class MealViewHolder extends RecyclerView.ViewHolder {
-        private TextView textViewName;
+        private TextView textViewMealName;
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewName = itemView.findViewById(R.id.textViewName);
+            textViewMealName = itemView.findViewById(R.id.textViewMealName);
         }
 
         public void bind(Meal meal) {
-            textViewName.setText(meal.getStrMeal());
+            textViewMealName.setText(meal.getStrMeal());
         }
     }
 }

@@ -17,44 +17,44 @@ import android.widget.ProgressBar;
 import java.util.Collections;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
 import rs.raf.projekat_jun_lazar_bojanic_11621.adapter.CategoryListAdapter;
+import rs.raf.projekat_jun_lazar_bojanic_11621.adapter.MealListAdapter;
 import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.HomeViewModel;
+import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.MealsViewModel;
 
-public class HomeFragment extends Fragment {
+public class MealsFragment extends Fragment {
 
-    private CategoryListAdapter categoryListAdapter;
-    private HomeViewModel homeViewModel;
+    private MealListAdapter mealListAdapter;
+    private MealsViewModel mealsViewModel;
     private ProgressBar progressBarLoading;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Initialize the ViewModel
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        mealsViewModel = new ViewModelProvider(this).get(MealsViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        RecyclerView recyclerViewCategoryList = view.findViewById(R.id.recyclerViewCategoryList);
-        recyclerViewCategoryList.setLayoutManager(new LinearLayoutManager(requireContext()));
+        View view = inflater.inflate(R.layout.fragment_meals, container, false);
+        RecyclerView recyclerViewMealList = view.findViewById(R.id.recyclerViewMealList);
+        recyclerViewMealList.setLayoutManager(new LinearLayoutManager(requireContext()));
         progressBarLoading = view.findViewById(R.id.progressBarLoading);
-        categoryListAdapter = new CategoryListAdapter(Collections.emptyList());
-        recyclerViewCategoryList.setAdapter(categoryListAdapter);
-        homeViewModel.getCategoryListLiveData().observe(getViewLifecycleOwner(), categoryList -> {
-            categoryListAdapter.setCategoryList(categoryList);
+        mealListAdapter = new MealListAdapter(Collections.emptyList());
+        recyclerViewMealList.setAdapter(mealListAdapter);
+        mealsViewModel.getMealListLiveData().observe(getViewLifecycleOwner(), mealList -> {
+            mealListAdapter.setMealList(mealList);
         });
-        homeViewModel.getLoadingStatusLiveData().observe(getViewLifecycleOwner(), isLoading -> {
+        mealsViewModel.getLoadingStatusLiveData().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
                 showLoadingView();
             } else {
                 hideLoadingView();
             }
         });
-        homeViewModel.fetchAllCategories()
+        mealsViewModel.fetchAllMeals()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
@@ -64,6 +64,7 @@ public class HomeFragment extends Fragment {
     private void showLoadingView() {
         progressBarLoading.setVisibility(View.VISIBLE);
     }
+
     private void hideLoadingView() {
         progressBarLoading.setVisibility(View.GONE);
     }

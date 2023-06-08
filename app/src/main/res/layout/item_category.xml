@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/itemMeal"
+    android:id="@+id/itemCategory"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textViewMealName"
+        android:id="@+id/textViewCategoryName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"

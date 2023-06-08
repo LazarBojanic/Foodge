@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.itemHome);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if(itemId == R.id.itemFoods){
-                navController.navigate(R.id.fragmentFoods);
+            if(itemId == R.id.itemMeals){
+                navController.navigate(R.id.fragmentMeals);
                 return true;
             }
             else if(itemId == R.id.itemHome){

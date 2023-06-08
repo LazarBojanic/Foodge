@@ -14,46 +14,44 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.FoodgeApp;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Category;
-import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.repository.ICategoryRepository;
-import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.response.CategoriesResponse;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Meal;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.repository.IMealRepository;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.response.MealsResponse;
 
-public class HomeViewModel extends ViewModel {
-    private ICategoryRepository categoryRepository;
-    private MutableLiveData<List<Category>> categoryListLiveData;
-    private List<Category> cachedCategoryList;
+public class MealsViewModel extends ViewModel {
+    private IMealRepository mealRepository;
+    private MutableLiveData<List<Meal>> mealListMutableLiveData;
+    private List<Meal> cachedMealList;
     private MutableLiveData<Boolean> loadingStatusLiveData; // Added loading status LiveData
 
-
-    public HomeViewModel() {
-        categoryRepository = FoodgeApp.getInstance().getRemoteAppComponent().getCategoryRepository();
-        categoryListLiveData = new MutableLiveData<>();
+    public MealsViewModel() {
+        mealRepository = FoodgeApp.getInstance().getRemoteAppComponent().getMealRepository();
+        mealListMutableLiveData = new MutableLiveData<>();
         loadingStatusLiveData = new MutableLiveData<>();
     }
 
-    public LiveData<List<Category>> getCategoryListLiveData() {
-        return categoryListLiveData;
+    public LiveData<List<Meal>> getMealListLiveData() {
+        return mealListMutableLiveData;
     }
-
     public LiveData<Boolean> getLoadingStatusLiveData() {
         return loadingStatusLiveData;
     }
-
-    public Observable<List<Category>> fetchAllCategories() {
-        if (categoryListLiveData.getValue() != null) {
+    public Observable<List<Meal>> fetchAllMeals() {
+        if (mealListMutableLiveData.getValue() != null) {
             // Categories already fetched, return cached data
-            return Observable.just(cachedCategoryList);
+            return Observable.just(cachedMealList);
         }
 
         // Categories not fetched, make an API call
-        return categoryRepository.fetchAllCategories()
+        return mealRepository.fetchAllMealsByFirstLetter("b")
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> setLoadingStatus(true))
                 .doFinally(() -> setLoadingStatus(false))
                 .map(response -> {
                     // Update cached data and LiveData with the fetched categories
-                    cachedCategoryList = response.getCategories();
-                    categoryListLiveData.postValue(cachedCategoryList);
-                    return cachedCategoryList;
+                    cachedMealList = response.getMeals();
+                    mealListMutableLiveData.postValue(cachedMealList);
+                    return cachedMealList;
                 });
     }
 

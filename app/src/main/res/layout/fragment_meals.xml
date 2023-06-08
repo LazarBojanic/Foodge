@@ -2,15 +2,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fragmentHome"
+    android:id="@+id/fragmentMeals"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.HomeFragment">
+    tools:context=".fragment.MealsFragment">
 
     <include layout="@layout/progress_bar_loading" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCategoryList"
+        android:id="@+id/recyclerViewMealList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>

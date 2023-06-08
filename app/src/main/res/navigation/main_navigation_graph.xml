@@ -5,15 +5,15 @@
     app:startDestination="@id/fragmentHome">
 
     <fragment
-        android:id="@+id/fragmentFoods"
-        android:name="rs.raf.projekat_jun_lazar_bojanic_11621.fragment.FoodsFragment"
-        android:label="Foods Fragment"
-        tools:layout="@layout/fragment_foods">
+        android:id="@+id/fragmentMeals"
+        android:name="rs.raf.projekat_jun_lazar_bojanic_11621.fragment.MealsFragment"
+        android:label="Meals Fragment"
+        tools:layout="@layout/fragment_meals">
         <action
-            android:id="@+id/action_fragmentFoods_to_fragmentHome"
+            android:id="@+id/actionFragmentMealsToFragmentHome"
             app:destination="@id/fragmentHome" />
         <action
-            android:id="@+id/action_fragmentFoods_to_fragmentStats"
+            android:id="@+id/actionFragmentMealsToFragmentStats"
             app:destination="@id/fragmentStats" />
     </fragment>
 
@@ -23,11 +23,11 @@
         android:label="Home Fragment"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_fragmentHome_to_fragmentStats"
+            android:id="@+id/actionFragmentHomeToFragmentStats"
             app:destination="@id/fragmentStats" />
         <action
-            android:id="@+id/action_fragmentHome_to_fragmentFoods"
-            app:destination="@id/fragmentFoods" />
+            android:id="@+id/actionFragmentHomeToFragmentMeals"
+            app:destination="@id/fragmentMeals" />
     </fragment>
 
     <fragment
@@ -36,10 +36,10 @@
         android:label="Stats Fragment"
         tools:layout="@layout/fragment_stats">
         <action
-            android:id="@+id/action_fragmentStats_to_fragmentHome"
+            android:id="@+id/actionFragmentStatsToFragmentHome"
             app:destination="@id/fragmentHome" />
         <action
-            android:id="@+id/action_fragmentStats_to_fragmentFoods"
-            app:destination="@id/fragmentFoods" />
+            android:id="@+id/actionFragmentStatsToFragmentMeals"
+            app:destination="@id/fragmentMeals" />
     </fragment>
 </navigation>

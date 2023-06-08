@@ -24,11 +24,7 @@ public class FoodgeApp extends Application {
                 .build();
         instance = this;
     }
-
     public static FoodgeApp getInstance(){
-        if(instance == null){
-            instance = new FoodgeApp();
-        }
         return instance;
     }
     public LocalAppComponent getLocalAppComponent(){
