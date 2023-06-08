@@ -1,5 +1,6 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.fragment;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import java.util.Collections;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
+import rs.raf.projekat_jun_lazar_bojanic_11621.activity.MainActivity;
 import rs.raf.projekat_jun_lazar_bojanic_11621.adapter.CategoryListAdapter;
 import rs.raf.projekat_jun_lazar_bojanic_11621.adapter.MealListAdapter;
 import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.HomeViewModel;
@@ -35,7 +37,6 @@ public class MealsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mealsViewModel = new ViewModelProvider(this).get(MealsViewModel.class);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meals, container, false);
@@ -54,13 +55,23 @@ public class MealsFragment extends Fragment {
                 hideLoadingView();
             }
         });
+
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        MainActivity mainActivity = (MainActivity)requireActivity();
+        mealsViewModel.setMainActivityViewModel(mainActivity.getMainActivityViewModel());
+
         mealsViewModel.fetchAllMeals()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-
-        return view;
     }
+
     private void showLoadingView() {
         progressBarLoading.setVisibility(View.VISIBLE);
     }

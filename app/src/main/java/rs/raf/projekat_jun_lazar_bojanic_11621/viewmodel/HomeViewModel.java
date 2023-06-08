@@ -1,28 +1,22 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.FoodgeApp;
-import rs.raf.projekat_jun_lazar_bojanic_11621.R;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Category;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.repository.ICategoryRepository;
-import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.response.CategoriesResponse;
 
 public class HomeViewModel extends ViewModel {
     private ICategoryRepository categoryRepository;
     private MutableLiveData<List<Category>> categoryListLiveData;
-    private List<Category> cachedCategoryList;
-    private MutableLiveData<Boolean> loadingStatusLiveData; // Added loading status LiveData
-
+    private MutableLiveData<Boolean> loadingStatusLiveData;
+    private MainActivityViewModel mainActivityViewModel;
 
     public HomeViewModel() {
         categoryRepository = FoodgeApp.getInstance().getRemoteAppComponent().getCategoryRepository();
@@ -39,9 +33,11 @@ public class HomeViewModel extends ViewModel {
     }
 
     public Observable<List<Category>> fetchAllCategories() {
-        if (categoryListLiveData.getValue() != null) {
-            // Categories already fetched, return cached data
-            return Observable.just(cachedCategoryList);
+        List<Category> cachedCategories = mainActivityViewModel.getCachedCategoryList();
+        if (cachedCategories != null) {
+            setLoadingStatus(false);
+            categoryListLiveData.postValue(cachedCategories);
+            return Observable.just(cachedCategories);
         }
 
         // Categories not fetched, make an API call
@@ -51,13 +47,17 @@ public class HomeViewModel extends ViewModel {
                 .doFinally(() -> setLoadingStatus(false))
                 .map(response -> {
                     // Update cached data and LiveData with the fetched categories
-                    cachedCategoryList = response.getCategories();
-                    categoryListLiveData.postValue(cachedCategoryList);
-                    return cachedCategoryList;
+                    List<Category> categories = response.getCategories();
+                    mainActivityViewModel.setCachedCategoryList(categories);
+                    categoryListLiveData.postValue(categories);
+                    return categories;
                 });
     }
 
     private void setLoadingStatus(boolean isLoading) {
         loadingStatusLiveData.postValue(isLoading);
+    }
+    public void setMainActivityViewModel(MainActivityViewModel mainActivityViewModel) {
+        this.mainActivityViewModel = mainActivityViewModel;
     }
 }

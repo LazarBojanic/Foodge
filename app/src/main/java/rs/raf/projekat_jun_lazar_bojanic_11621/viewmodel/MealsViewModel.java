@@ -21,9 +21,9 @@ import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.response.MealsRes
 public class MealsViewModel extends ViewModel {
     private IMealRepository mealRepository;
     private MutableLiveData<List<Meal>> mealListMutableLiveData;
-    private List<Meal> cachedMealList;
+    private static List<Meal> cachedMealList;
     private MutableLiveData<Boolean> loadingStatusLiveData; // Added loading status LiveData
-
+    private MainActivityViewModel mainActivityViewModel;
     public MealsViewModel() {
         mealRepository = FoodgeApp.getInstance().getRemoteAppComponent().getMealRepository();
         mealListMutableLiveData = new MutableLiveData<>();
@@ -37,8 +37,10 @@ public class MealsViewModel extends ViewModel {
         return loadingStatusLiveData;
     }
     public Observable<List<Meal>> fetchAllMeals() {
-        if (mealListMutableLiveData.getValue() != null) {
-            // Categories already fetched, return cached data
+        List<Meal> cachedMealList = mainActivityViewModel.getCachedMealList();
+        if (cachedMealList != null) {
+            setLoadingStatus(false);
+            mealListMutableLiveData.postValue(cachedMealList);
             return Observable.just(cachedMealList);
         }
 
@@ -49,13 +51,17 @@ public class MealsViewModel extends ViewModel {
                 .doFinally(() -> setLoadingStatus(false))
                 .map(response -> {
                     // Update cached data and LiveData with the fetched categories
-                    cachedMealList = response.getMeals();
-                    mealListMutableLiveData.postValue(cachedMealList);
-                    return cachedMealList;
+                    List<Meal> meals = response.getMeals();
+                    mainActivityViewModel.setCachedMealList(meals);
+                    mealListMutableLiveData.postValue(meals);
+                    return meals;
                 });
     }
 
     private void setLoadingStatus(boolean isLoading) {
         loadingStatusLiveData.postValue(isLoading);
+    }
+    public void setMainActivityViewModel(MainActivityViewModel mainActivityViewModel) {
+        this.mainActivityViewModel = mainActivityViewModel;
     }
 }

@@ -1,5 +1,6 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.fragment;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
+import rs.raf.projekat_jun_lazar_bojanic_11621.activity.MainActivity;
 import rs.raf.projekat_jun_lazar_bojanic_11621.adapter.CategoryListAdapter;
 import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.HomeViewModel;
 
@@ -32,10 +34,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Initialize the ViewModel
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-    }
 
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -54,13 +55,23 @@ public class HomeFragment extends Fragment {
                 hideLoadingView();
             }
         });
+
+
+        return view;
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        MainActivity mainActivity = (MainActivity)requireActivity();
+        homeViewModel.setMainActivityViewModel(mainActivity.getMainActivityViewModel());
+
         homeViewModel.fetchAllCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-
-        return view;
     }
+
+
     private void showLoadingView() {
         progressBarLoading.setVisibility(View.VISIBLE);
     }
