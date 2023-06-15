@@ -1,24 +1,16 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
-import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.HomeViewModel;
 import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.MainActivityViewModel;
 
 public class MainActivity extends AppCompatActivity {

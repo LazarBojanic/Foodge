@@ -16,6 +16,10 @@ import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Meal;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
     private List<Category> categoryList;
+    private OnCategoryClickListener onCategoryClickListener;
+    public void setOnCategoryClickListener(OnCategoryClickListener onCategoryClickListener){
+        this.onCategoryClickListener = onCategoryClickListener;
+    }
 
     public CategoryListAdapter(List<Category> categoryList) {
         this.categoryList = categoryList;
@@ -47,13 +51,23 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public int getItemCount() {
         return categoryList.size();
     }
+    public interface OnCategoryClickListener {
+        void onCategoryClick(Category category);
+    }
 
-    static class CategoryViewHolder extends RecyclerView.ViewHolder {
+    class CategoryViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewCategoryName;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewCategoryName = itemView.findViewById(R.id.textViewCategoryName);
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && onCategoryClickListener != null) {
+                    Category category = categoryList.get(position);
+                    onCategoryClickListener.onCategoryClick(category);
+                }
+            });
         }
 
         public void bind(Category category) {

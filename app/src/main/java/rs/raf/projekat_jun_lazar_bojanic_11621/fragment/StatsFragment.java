@@ -13,11 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
-import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.StatsViewModel;
+import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.StatsFragmentViewModel;
 
 public class StatsFragment extends Fragment {
 
-    private StatsViewModel mViewModel;
+    private StatsFragmentViewModel mViewModel;
 
     public static StatsFragment newInstance() {
         return new StatsFragment();
@@ -32,7 +32,7 @@ public class StatsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(StatsViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(StatsFragmentViewModel.class);
         // TODO: Use the ViewModel
     }
 

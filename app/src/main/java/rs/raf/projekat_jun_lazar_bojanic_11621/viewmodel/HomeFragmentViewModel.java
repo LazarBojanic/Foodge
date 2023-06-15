@@ -12,13 +12,13 @@ import rs.raf.projekat_jun_lazar_bojanic_11621.FoodgeApp;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Category;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.repository.ICategoryRepository;
 
-public class HomeViewModel extends ViewModel {
+public class HomeFragmentViewModel extends ViewModel {
     private ICategoryRepository categoryRepository;
     private MutableLiveData<List<Category>> categoryListLiveData;
     private MutableLiveData<Boolean> loadingStatusLiveData;
     private MainActivityViewModel mainActivityViewModel;
 
-    public HomeViewModel() {
+    public HomeFragmentViewModel() {
         categoryRepository = FoodgeApp.getInstance().getRemoteAppComponent().getCategoryRepository();
         categoryListLiveData = new MutableLiveData<>();
         loadingStatusLiveData = new MutableLiveData<>();

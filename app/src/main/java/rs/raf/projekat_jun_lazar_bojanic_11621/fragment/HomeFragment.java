@@ -3,6 +3,7 @@ package rs.raf.projekat_jun_lazar_bojanic_11621.fragment;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -18,23 +19,23 @@ import android.widget.ProgressBar;
 import java.util.Collections;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
 import rs.raf.projekat_jun_lazar_bojanic_11621.activity.MainActivity;
+import rs.raf.projekat_jun_lazar_bojanic_11621.activity.MealsSearchActivity;
 import rs.raf.projekat_jun_lazar_bojanic_11621.adapter.CategoryListAdapter;
-import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.HomeViewModel;
+import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.HomeFragmentViewModel;
 
 public class HomeFragment extends Fragment {
 
     private CategoryListAdapter categoryListAdapter;
-    private HomeViewModel homeViewModel;
+    private HomeFragmentViewModel homeFragmentViewModel;
     private ProgressBar progressBarLoading;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeFragmentViewModel = new ViewModelProvider(this).get(HomeFragmentViewModel.class);
 
     }
     @Override
@@ -45,10 +46,15 @@ public class HomeFragment extends Fragment {
         progressBarLoading = view.findViewById(R.id.progressBarLoading);
         categoryListAdapter = new CategoryListAdapter(Collections.emptyList());
         recyclerViewCategoryList.setAdapter(categoryListAdapter);
-        homeViewModel.getCategoryListLiveData().observe(getViewLifecycleOwner(), categoryList -> {
+        categoryListAdapter.setOnCategoryClickListener(category -> {
+            Intent intent = new Intent(requireActivity(), MealsSearchActivity.class);
+            intent.putExtra(String.valueOf(R.string.extraStrCategory), category.getStrCategory());
+            startActivity(intent);
+        });
+        homeFragmentViewModel.getCategoryListLiveData().observe(getViewLifecycleOwner(), categoryList -> {
             categoryListAdapter.setCategoryList(categoryList);
         });
-        homeViewModel.getLoadingStatusLiveData().observe(getViewLifecycleOwner(), isLoading -> {
+        homeFragmentViewModel.getLoadingStatusLiveData().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
                 showLoadingView();
             } else {
@@ -63,9 +69,9 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MainActivity mainActivity = (MainActivity)requireActivity();
-        homeViewModel.setMainActivityViewModel(mainActivity.getMainActivityViewModel());
+        homeFragmentViewModel.setMainActivityViewModel(mainActivity.getMainActivityViewModel());
 
-        homeViewModel.fetchAllCategories()
+        homeFragmentViewModel.fetchAllCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();

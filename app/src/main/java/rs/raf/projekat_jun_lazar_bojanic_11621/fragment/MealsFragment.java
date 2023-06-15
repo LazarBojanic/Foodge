@@ -21,21 +21,19 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
 import rs.raf.projekat_jun_lazar_bojanic_11621.activity.MainActivity;
-import rs.raf.projekat_jun_lazar_bojanic_11621.adapter.CategoryListAdapter;
 import rs.raf.projekat_jun_lazar_bojanic_11621.adapter.MealListAdapter;
-import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.HomeViewModel;
-import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.MealsViewModel;
+import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.MealsFragmentViewModel;
 
 public class MealsFragment extends Fragment {
 
     private MealListAdapter mealListAdapter;
-    private MealsViewModel mealsViewModel;
+    private MealsFragmentViewModel mealsFragmentViewModel;
     private ProgressBar progressBarLoading;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mealsViewModel = new ViewModelProvider(this).get(MealsViewModel.class);
+        mealsFragmentViewModel = new ViewModelProvider(this).get(MealsFragmentViewModel.class);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,10 +43,10 @@ public class MealsFragment extends Fragment {
         progressBarLoading = view.findViewById(R.id.progressBarLoading);
         mealListAdapter = new MealListAdapter(Collections.emptyList());
         recyclerViewMealList.setAdapter(mealListAdapter);
-        mealsViewModel.getMealListLiveData().observe(getViewLifecycleOwner(), mealList -> {
+        mealsFragmentViewModel.getMealListLiveData().observe(getViewLifecycleOwner(), mealList -> {
             mealListAdapter.setMealList(mealList);
         });
-        mealsViewModel.getLoadingStatusLiveData().observe(getViewLifecycleOwner(), isLoading -> {
+        mealsFragmentViewModel.getLoadingStatusLiveData().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
                 showLoadingView();
             } else {
@@ -64,9 +62,9 @@ public class MealsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MainActivity mainActivity = (MainActivity)requireActivity();
-        mealsViewModel.setMainActivityViewModel(mainActivity.getMainActivityViewModel());
+        mealsFragmentViewModel.setMainActivityViewModel(mainActivity.getMainActivityViewModel());
 
-        mealsViewModel.fetchAllMeals()
+        mealsFragmentViewModel.fetchAllMeals()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();

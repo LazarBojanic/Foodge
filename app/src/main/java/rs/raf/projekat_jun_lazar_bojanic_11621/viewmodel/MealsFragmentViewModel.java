@@ -1,30 +1,24 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.FoodgeApp;
-import rs.raf.projekat_jun_lazar_bojanic_11621.R;
-import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Category;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Meal;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.repository.IMealRepository;
-import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.response.MealsResponse;
 
-public class MealsViewModel extends ViewModel {
+public class MealsFragmentViewModel extends ViewModel {
     private IMealRepository mealRepository;
     private MutableLiveData<List<Meal>> mealListMutableLiveData;
     private static List<Meal> cachedMealList;
     private MutableLiveData<Boolean> loadingStatusLiveData; // Added loading status LiveData
     private MainActivityViewModel mainActivityViewModel;
-    public MealsViewModel() {
+    public MealsFragmentViewModel() {
         mealRepository = FoodgeApp.getInstance().getRemoteAppComponent().getMealRepository();
         mealListMutableLiveData = new MutableLiveData<>();
         loadingStatusLiveData = new MutableLiveData<>();

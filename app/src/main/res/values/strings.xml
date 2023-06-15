@@ -25,4 +25,6 @@
     <string name="meals">Meals</string>
     <string name="home">Home</string>
     <string name="stats">Stats</string>
+    <string name="extraIdCategory">EXTRA_ID_CATEGORY</string>
+    <string name="extraStrCategory">EXTRA_STR_CATEGORY</string>
 </resources>
