@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import okhttp3.HttpUrl;
 import rs.raf.projekat_jun_lazar_bojanic_11621.FoodgeApp;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Category;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Meal;
