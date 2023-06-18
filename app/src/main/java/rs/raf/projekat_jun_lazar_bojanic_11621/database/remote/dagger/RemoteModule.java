@@ -3,8 +3,15 @@ package rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.dagger;
 import android.app.Application;
 import android.util.Log;
 
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
+
+import java.io.IOException;
 
 import javax.inject.Singleton;
 
@@ -65,12 +72,31 @@ public class RemoteModule {
         client.addInterceptor(interceptor);
         return client.build();
     }
-
+    /*@Provides
+    @Singleton
+    Gson provideGson() {
+        return new GsonBuilder()
+                .enableComplexMapKeySerialization()
+                .setLenient()
+                .setPrettyPrinting()
+                .setVersion(1.0)
+                .create();
+    }
+    @Provides
+    @Singleton
+    Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
+        return new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .baseUrl("https://www.themealdb.com/")
+                .client(okHttpClient)
+                .build();
+    }*/
     @Provides
     @Singleton
     ObjectMapper provideJackson() {
         ObjectMapper objectMapper = new ObjectMapper();
-        //objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return objectMapper;
     }
 
@@ -84,6 +110,8 @@ public class RemoteModule {
                 .client(okHttpClient)
                 .build();
     }
+
+
     @Provides
     @Singleton
     public IAreaRepository provideAreaRepository(Retrofit retrofit) {

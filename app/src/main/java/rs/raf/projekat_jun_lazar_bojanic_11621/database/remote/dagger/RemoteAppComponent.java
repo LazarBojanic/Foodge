@@ -19,4 +19,5 @@ public interface RemoteAppComponent {
     IIngredientRepository getIngredientRepository();
     IMealRepository getMealRepository();
     Retrofit getRetrofit();
+
 }

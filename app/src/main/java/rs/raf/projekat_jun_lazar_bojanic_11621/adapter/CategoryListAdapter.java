@@ -3,6 +3,7 @@ package rs.raf.projekat_jun_lazar_bojanic_11621.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,10 +58,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     class CategoryViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewCategoryName;
-
+        private ImageView imageViewCategoryImageThumbnail;
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewCategoryName = itemView.findViewById(R.id.textViewCategoryName);
+            imageViewCategoryImageThumbnail = itemView.findViewById(R.id.imageViewCategoryImageThumbnail);
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && onCategoryClickListener != null) {
@@ -72,6 +74,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
         public void bind(Category category) {
             textViewCategoryName.setText(category.getStrCategory());
+            imageViewCategoryImageThumbnail.setImageBitmap(category.getCategoryImageThumbnail());
         }
     }
 }

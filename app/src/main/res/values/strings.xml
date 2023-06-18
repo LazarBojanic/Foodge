@@ -27,4 +27,6 @@
     <string name="stats">Stats</string>
     <string name="extraIdCategory">EXTRA_ID_CATEGORY</string>
     <string name="extraStrCategory">EXTRA_STR_CATEGORY</string>
+    <string name="categoryImageThumbnail">Category Image Thumbnail</string>
+    <string name="mealImageThumbnail">Meal Image Thumbnail</string>
 </resources>

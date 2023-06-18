@@ -1,9 +1,10 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.util;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Serializer {
+public class JacksonSerializer {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static String serialize(Object object) throws JsonProcessingException {

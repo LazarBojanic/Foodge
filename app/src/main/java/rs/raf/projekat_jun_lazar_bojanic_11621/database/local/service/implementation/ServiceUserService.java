@@ -3,8 +3,6 @@ package rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.implement
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.util.NoSuchElementException;
-
 import javax.inject.Inject;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -19,7 +17,8 @@ import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.repository.Service
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.specification.IServiceUserService;
 import rs.raf.projekat_jun_lazar_bojanic_11621.exception.RegistrationException;
 import rs.raf.projekat_jun_lazar_bojanic_11621.exception.VerificationException;
-import rs.raf.projekat_jun_lazar_bojanic_11621.util.Serializer;
+import rs.raf.projekat_jun_lazar_bojanic_11621.util.GsonSerializer;
+import rs.raf.projekat_jun_lazar_bojanic_11621.util.JacksonSerializer;
 
 public class ServiceUserService implements IServiceUserService {
     private final ServiceUserDao serviceUserDao;
@@ -87,7 +86,7 @@ public class ServiceUserService implements IServiceUserService {
                 if (sharedPreferences.contains(context.getResources().getString(R.string.userSharedPreference))) {
                     String serviceUserJson = sharedPreferences.getString(
                             context.getResources().getString(R.string.userSharedPreference), "USER_SP_UNAVAILABLE");
-                    return Serializer.deserialize(serviceUserJson, ServiceUser.class);
+                    return JacksonSerializer.deserialize(serviceUserJson, ServiceUser.class);
                 }
             }
             return null;
@@ -101,7 +100,7 @@ public class ServiceUserService implements IServiceUserService {
             SharedPreferences sharedPreferences = context.getSharedPreferences(
                     context.getResources().getString(R.string.foodgeSharedPreferences), Context.MODE_PRIVATE);
             if (sharedPreferences != null) {
-                String serviceUserJson = Serializer.serialize(serviceUser);
+                String serviceUserJson = JacksonSerializer.serialize(serviceUser);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(context.getResources().getString(R.string.userSharedPreference), serviceUserJson);
                 editor.apply();

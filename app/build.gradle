@@ -84,9 +84,12 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
     implementation "androidx.room:room-paging:$room_version"
     implementation "androidx.room:room-rxjava3:$room_version"
-    //Retrofit with Jackson and RxJava3
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    //Retrofit with Jackson (Gson) and RxJava3
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
+    //implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
     //Commons
     implementation 'commons-io:commons-io:2.12.0'

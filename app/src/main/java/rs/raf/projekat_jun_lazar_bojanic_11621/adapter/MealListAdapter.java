@@ -3,6 +3,7 @@ package rs.raf.projekat_jun_lazar_bojanic_11621.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,10 +58,11 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.MealVi
     }
     class MealViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewMealName;
-
+        private ImageView imageViewMealImageThumbnail;
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewMealName = itemView.findViewById(R.id.textViewMealName);
+            imageViewMealImageThumbnail = itemView.findViewById(R.id.imageViewMealImageThumbnail);
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && onMealClickListener != null) {
@@ -72,6 +74,7 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.MealVi
 
         public void bind(Meal meal) {
             textViewMealName.setText(meal.getStrMeal());
+            imageViewMealImageThumbnail.setImageBitmap(meal.getMealImageThumbnail());
         }
     }
 }
