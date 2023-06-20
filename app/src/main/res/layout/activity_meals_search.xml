@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activityMealsSearch"
@@ -7,12 +8,196 @@
     android:layout_height="match_parent"
     tools:context=".activity.MealsSearchActivity">
 
-    <include layout="@layout/progress_bar_loading" />
+    <GridLayout
+        android:id="@+id/gridLayoutFilters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:rowCount="2"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <!-- Category Filter -->
+        <TextView
+            android:id="@+id/textCategoryFilterLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/category"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"/>
+
+        <Spinner
+            android:id="@+id/spinnerCategoryFilter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="2"
+            android:layout_rowWeight="1">
+        </Spinner>
+
+        <!-- Area Filter -->
+        <TextView
+            android:id="@+id/textAreaFilterLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/area"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"/>
+
+        <Spinner
+            android:id="@+id/spinnerAreaFilter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="2"
+            android:layout_rowWeight="1">
+        </Spinner>
+
+        <!-- Ingredient Filter -->
+        <TextView
+            android:id="@+id/textIngredientFilterLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ingredient"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"/>
+
+        <Spinner
+            android:id="@+id/spinnerIngredientFilter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="2"
+            android:layout_rowWeight="1">
+        </Spinner>
+
+        <!-- Tag Filter -->
+        <TextView
+            android:id="@+id/textTagFilterLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tag"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"/>
+
+        <Spinner
+            android:id="@+id/spinnerTagFilter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="2"
+            android:layout_rowWeight="1">
+        </Spinner>
+
+    </GridLayout>
+
+    <EditText
+        android:id="@+id/editTextSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/search_by_name"
+        android:padding="8dp"
+        android:layout_below="@id/gridLayoutFilters"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"/>
+
+    <LinearLayout
+        android:id="@+id/linearSortOptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/editTextSearch"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp">
+
+        <TextView
+            android:id="@+id/textSortLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sort_by"
+            android:textSize="18sp"
+            android:layout_gravity="center"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroupSortOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButtonName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name"
+                android:checked="true"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
+
+            <RadioButton
+                android:id="@+id/radioButtonCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
+
+            <RadioButton
+                android:id="@+id/radioButtonArea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/area"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewMealList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linearSortOptions"
+        android:layout_above="@id/linearPagination"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include layout="@layout/progress_bar_loading" />
+
+    <LinearLayout
+        android:id="@+id/linearPagination"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/buttonPrevPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/previous"
+            android:enabled="false"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:id="@+id/textPageNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/one"/>
+
+        <Button
+            android:id="@+id/buttonNextPage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next"
+            android:enabled="false"
+            android:layout_marginStart="8dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
