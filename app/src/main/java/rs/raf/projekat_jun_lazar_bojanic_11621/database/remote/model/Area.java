@@ -17,4 +17,11 @@ public class Area {
     public void setStrArea(String strArea) {
         this.strArea = strArea;
     }
+
+    @Override
+    public String toString() {
+        return "Area{" +
+                "strArea='" + strArea + '\'' +
+                '}';
+    }
 }

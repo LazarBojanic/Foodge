@@ -47,4 +47,14 @@ public class Ingredient {
     public void setStrType(String strType) {
         this.strType = strType;
     }
+
+    @Override
+    public String toString() {
+        return "Ingredient{" +
+                "idIngredient='" + idIngredient + '\'' +
+                ", strIngredient='" + strIngredient + '\'' +
+                ", strDescription='" + strDescription + '\'' +
+                ", strType='" + strType + '\'' +
+                '}';
+    }
 }

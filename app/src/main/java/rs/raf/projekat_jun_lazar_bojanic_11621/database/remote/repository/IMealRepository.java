@@ -31,6 +31,10 @@ public interface IMealRepository {
 
     @GET("api/json/v1/1/filter.php")
     Observable<MealsResponse> fetchAllMealsByCategory(@Query("c") String c);
+    @GET("api/json/v1/1/filter.php")
+    Observable<MealsResponse> fetchAllMealsByArea(@Query("a") String a);
+    @GET("api/json/v1/1/filter.php")
+    Observable<MealsResponse> fetchAllMealsByIngredient(@Query("i") String i);
 
     @GET("images/media/meals/{mealImageName}/preview")
     Single<ResponseBody> fetchMealImageThumbnail(@Path("mealImageName") String mealImageName);

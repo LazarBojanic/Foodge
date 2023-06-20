@@ -17,4 +17,11 @@ public class SimpleCategory {
     public void setStrCategory(String strCategory) {
         this.strCategory = strCategory;
     }
+
+    @Override
+    public String toString() {
+        return "SimpleCategory{" +
+                "strCategory='" + strCategory + '\'' +
+                '}';
+    }
 }

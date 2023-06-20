@@ -26,11 +26,18 @@ public class MealsSearchActivity extends AppCompatActivity {
     private MealsSearchActivityViewModel mealsSearchActivityViewModel;
     private MealListAdapter mealListAdapter;
     private ProgressBar progressBarLoading;
-    private String strCategory;
-
+    private String receivedStrCategory;
     private String selectedStrCategory;
+    private String selectedStrArea;
+    private String selectedStrIngredient;
     private Spinner spinnerCategoryFilter;
-
+    private Spinner spinnerAreaFilter;
+    private Spinner spinnerIngredientFilter;
+    //private Spinner spinnerTagFilter;
+    ArrayAdapter<String> spinnerCategoryFilterAdapter;
+    ArrayAdapter<String> spinnerAreaFilterAdapter;
+    ArrayAdapter<String> spinnerIngredientFilterAdapter;
+    //ArrayAdapter<String> spinnerTagFilterAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +49,13 @@ public class MealsSearchActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
+        progressBarLoading = findViewById(R.id.progressBarLoading);
         spinnerCategoryFilter = findViewById(R.id.spinnerCategoryFilter);
+        spinnerAreaFilter = findViewById(R.id.spinnerAreaFilter);
+        spinnerIngredientFilter = findViewById(R.id.spinnerIngredientFilter);
+        //spinnerTagFilter = findViewById(R.id.spinnerTagFilter);
         RecyclerView recyclerViewMealList = findViewById(R.id.recyclerViewMealList);
         recyclerViewMealList.setLayoutManager(new LinearLayoutManager(this));
-        progressBarLoading = findViewById(R.id.progressBarLoading);
         mealListAdapter = new MealListAdapter(Collections.emptyList());
         recyclerViewMealList.setAdapter(mealListAdapter);
     }
@@ -63,18 +73,31 @@ public class MealsSearchActivity extends AppCompatActivity {
             }
         });
         mealsSearchActivityViewModel.getSimpleCategoryListLiveData().observe(this, categories -> {
-            ArrayAdapter<String> spinnerCategoryFilterAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, categories);
+            spinnerCategoryFilterAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, categories);
             spinnerCategoryFilterAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
             spinnerCategoryFilter.setAdapter(spinnerCategoryFilterAdapter);
-
-            // Set selected item in spinner
-            if (strCategory != null && !strCategory.isEmpty()) {
-                int index = spinnerCategoryFilterAdapter.getPosition(strCategory);
+            if (receivedStrCategory != null && !receivedStrCategory.isEmpty()) {
+                int index = spinnerCategoryFilterAdapter.getPosition(receivedStrCategory);
                 if (index != -1) {
                     spinnerCategoryFilter.setSelection(index);
                 }
             }
         });
+        mealsSearchActivityViewModel.getSimpleAreaListLiveData().observe(this, areas -> {
+            spinnerAreaFilterAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, areas);
+            spinnerAreaFilterAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+            spinnerAreaFilter.setAdapter(spinnerAreaFilterAdapter);
+        });
+        mealsSearchActivityViewModel.getSimpleIngredientListLiveData().observe(this, ingredients -> {
+            spinnerIngredientFilterAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, ingredients);
+            spinnerIngredientFilterAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+            spinnerIngredientFilter.setAdapter(spinnerIngredientFilterAdapter);
+        });
+        /*mealsSearchActivityViewModel.getSimpleCategoryListLiveData().observe(this, categories -> {
+            spinnerTagFilterAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, categories);
+            spinnerTagFilterAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+            spinnerCategoryFilter.setAdapter(spinnerTagFilterAdapter);
+        });*/
     }
 
     private void initializeListeners() {
@@ -85,30 +108,76 @@ public class MealsSearchActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedStrCategory = spinnerCategoryFilter.getItemAtPosition(position).toString();
+                mealsSearchActivityViewModel.fetchAllMealsForCategory(selectedStrCategory)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spinnerAreaFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedStrArea = spinnerAreaFilter.getItemAtPosition(position).toString();
+                mealsSearchActivityViewModel.fetchAllMealsForArea(selectedStrArea)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        spinnerIngredientFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedStrIngredient = spinnerIngredientFilter.getItemAtPosition(position).toString();
+                mealsSearchActivityViewModel.fetchAllMealsForIngredient(selectedStrIngredient)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        /*spinnerCategoryFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedStrCategory = spinnerCategoryFilter.getItemAtPosition(position).toString();
                 Log.i(String.valueOf(R.string.foodgeTag), selectedStrCategory);
                 mealsSearchActivityViewModel.fetchAllMealsForCategory(selectedStrCategory)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
-        });
+        });*/
     }
 
     private void fetchInitialData() {
         Intent intent = getIntent();
-        strCategory = intent.getStringExtra(String.valueOf(R.string.extraStrCategory));
-        Log.i(String.valueOf(R.string.foodgeTag), strCategory);
+        receivedStrCategory = intent.getStringExtra(String.valueOf(R.string.extraStrCategory));
+        Log.i(String.valueOf(R.string.foodgeTag), receivedStrCategory);
 
         mealsSearchActivityViewModel.fetchAllCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
+        mealsSearchActivityViewModel.fetchAllAreas()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+        mealsSearchActivityViewModel.fetchAllIngredients()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
 
-        mealsSearchActivityViewModel.fetchAllMealsForCategory(strCategory)
+        mealsSearchActivityViewModel.fetchAllMealsForCategory(receivedStrCategory)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();

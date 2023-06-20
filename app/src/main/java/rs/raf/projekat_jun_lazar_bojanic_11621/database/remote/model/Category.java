@@ -75,6 +75,16 @@ public class Category {
         this.categoryImageThumbnail = categoryImageThumbnail;
     }
 
+    @Override
+    public String toString() {
+        return "Category{" +
+                "categoryImageThumbnail=" + categoryImageThumbnail +
+                ", idCategory='" + idCategory + '\'' +
+                ", strCategory='" + strCategory + '\'' +
+                ", strCategoryThumb='" + strCategoryThumb + '\'' +
+                ", strCategoryDescription='" + strCategoryDescription + '\'' +
+                '}';
+    }
 
     public void loadCategoryImageThumbnail(ResponseBody responseBody) throws IOException {
         byte[] bytes = responseBody.bytes();
