@@ -26,14 +26,14 @@
             android:textSize="18sp"
             android:layout_gravity="center"
             android:layout_columnWeight="1"
-            android:layout_rowWeight="1"/>
+            android:layout_rowWeight="3"/>
 
         <Spinner
             android:id="@+id/spinnerCategoryFilter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="2"
-            android:layout_rowWeight="1">
+            android:layout_rowWeight="3">
         </Spinner>
 
         <!-- Area Filter -->
@@ -45,14 +45,14 @@
             android:textSize="18sp"
             android:layout_gravity="center"
             android:layout_columnWeight="1"
-            android:layout_rowWeight="1"/>
+            android:layout_rowWeight="3"/>
 
         <Spinner
             android:id="@+id/spinnerAreaFilter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="2"
-            android:layout_rowWeight="1">
+            android:layout_rowWeight="3">
         </Spinner>
 
         <!-- Ingredient Filter -->
@@ -64,14 +64,14 @@
             android:textSize="18sp"
             android:layout_gravity="center"
             android:layout_columnWeight="1"
-            android:layout_rowWeight="1"/>
+            android:layout_rowWeight="3"/>
 
         <Spinner
             android:id="@+id/spinnerIngredientFilter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="2"
-            android:layout_rowWeight="1">
+            android:layout_rowWeight="3">
         </Spinner>
 
         <!-- Tag Filter -->
@@ -83,14 +83,14 @@
             android:textSize="18sp"
             android:layout_gravity="center"
             android:layout_columnWeight="1"
-            android:layout_rowWeight="1"/>
+            android:layout_rowWeight="3"/>
 
         <Spinner
             android:id="@+id/spinnerTagFilter"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="2"
-            android:layout_rowWeight="1">
+            android:layout_rowWeight="3">
         </Spinner>
 
     </GridLayout>

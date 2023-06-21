@@ -12,10 +12,12 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.rxjava3.subjects.PublishSubject;
 import rs.raf.projekat_jun_lazar_bojanic_11621.FoodgeApp;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Area;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Category;
@@ -33,6 +35,8 @@ public class MealsSearchActivityViewModel extends ViewModel {
     private IAreaRepository areaRepository;
     private IIngredientRepository ingredientRepository;
     private IMealRepository mealRepository;
+    private PublishSubject<String> searchSubject;
+
     private MutableLiveData<List<String>> simpleCategoryListLiveData;
     private MutableLiveData<List<String>> simpleAreaListLiveData;
     private MutableLiveData<List<String>> simpleIngredientListLiveData;
@@ -40,6 +44,7 @@ public class MealsSearchActivityViewModel extends ViewModel {
     private MutableLiveData<Boolean> loadingStatusLiveData;
 
     public MealsSearchActivityViewModel() {
+        searchSubject = PublishSubject.create();
         simpleCategoryListLiveData = new MutableLiveData<>();
         simpleAreaListLiveData = new MutableLiveData<>();
         simpleIngredientListLiveData = new MutableLiveData<>();
@@ -77,7 +82,7 @@ public class MealsSearchActivityViewModel extends ViewModel {
                 .doOnSubscribe(disposable -> setLoadingStatus(true))
                 .doFinally(() -> setLoadingStatus(false))
                 .flatMap(response -> {
-                    List<Meal> meals = response.getMeals();
+                    List<Meal> meals = response != null ? response.getMeals() : Collections.emptyList();
 
                     List<Single<Meal>> mealSingles = new ArrayList<>();
                     for (Meal meal : meals) {
@@ -115,6 +120,7 @@ public class MealsSearchActivityViewModel extends ViewModel {
                 })
                 .doOnNext(meals -> mealListLiveData.postValue(meals));
     }
+
     public Observable<List<Meal>> fetchAllMealsForArea(String strArea) {
         mealListLiveData.setValue(Collections.emptyList());
         return mealRepository.fetchAllMealsByArea(strArea)
@@ -122,7 +128,7 @@ public class MealsSearchActivityViewModel extends ViewModel {
                 .doOnSubscribe(disposable -> setLoadingStatus(true))
                 .doFinally(() -> setLoadingStatus(false))
                 .flatMap(response -> {
-                    List<Meal> meals = response.getMeals();
+                    List<Meal> meals = response != null ? response.getMeals() : Collections.emptyList();
 
                     List<Single<Meal>> mealSingles = new ArrayList<>();
                     for (Meal meal : meals) {
@@ -168,7 +174,7 @@ public class MealsSearchActivityViewModel extends ViewModel {
                 .doOnSubscribe(disposable -> setLoadingStatus(true))
                 .doFinally(() -> setLoadingStatus(false))
                 .flatMap(response -> {
-                    List<Meal> meals = response.getMeals();
+                    List<Meal> meals = response != null ? response.getMeals() : Collections.emptyList();
 
                     List<Single<Meal>> mealSingles = new ArrayList<>();
                     for (Meal meal : meals) {
@@ -211,7 +217,7 @@ public class MealsSearchActivityViewModel extends ViewModel {
         return categoryRepository.fetchAllCategories()
                 .subscribeOn(Schedulers.io())
                 .map(response -> {
-                    List<Category> categories = response.getCategories();
+                    List<Category> categories = response != null ? response.getCategories() : Collections.emptyList();
                     List<String> categoryNames = new ArrayList<>();
                     for (Category category : categories) {
                         categoryNames.add(category.getStrCategory());
@@ -221,11 +227,12 @@ public class MealsSearchActivityViewModel extends ViewModel {
                 .doOnNext(simpleCategoryListLiveData::postValue)
                 .onErrorReturnItem(new ArrayList<>());
     }
+
     public Observable<List<String>> fetchAllAreas() {
         return areaRepository.fetchAllAreas()
                 .subscribeOn(Schedulers.io())
                 .map(response -> {
-                    List<Area> areas = response.getAreas();
+                    List<Area> areas = response != null ? response.getAreas() : Collections.emptyList();
                     List<String> areaNames = new ArrayList<>();
                     for (Area area : areas) {
                         areaNames.add(area.getStrArea());
@@ -235,11 +242,12 @@ public class MealsSearchActivityViewModel extends ViewModel {
                 .doOnNext(simpleAreaListLiveData::postValue)
                 .onErrorReturnItem(new ArrayList<>());
     }
+
     public Observable<List<String>> fetchAllIngredients() {
         return ingredientRepository.fetchAllIngredients()
                 .subscribeOn(Schedulers.io())
                 .map(response -> {
-                    List<Ingredient> ingredients = response.getIngredients();
+                    List<Ingredient> ingredients = response != null ? response.getIngredients() : Collections.emptyList();
                     List<String> ingredientNames = new ArrayList<>();
                     for (Ingredient ingredient : ingredients) {
                         ingredientNames.add(ingredient.getStrIngredient());
@@ -248,6 +256,76 @@ public class MealsSearchActivityViewModel extends ViewModel {
                 })
                 .doOnNext(simpleIngredientListLiveData::postValue)
                 .onErrorReturnItem(new ArrayList<>());
+    }
+
+
+
+    public void setupSearchObserver() {
+        searchSubject
+                .debounce(300, TimeUnit.MILLISECONDS) // Delay to avoid sending too frequent requests
+                .distinctUntilChanged() // Only trigger if the text has changed
+                .subscribeOn(Schedulers.io())
+                .switchMap(this::performSearch) // Use switchMap to cancel previous requests
+                .subscribe(meals -> mealListLiveData.postValue(meals));
+    }
+
+    public void onSearchTextChanged(String searchText) {
+        searchSubject.onNext(searchText);
+    }
+
+    private Observable<List<Meal>> performSearch(String searchText) {
+        mealListLiveData.postValue(Collections.emptyList());
+        return mealRepository.fetchAllMealsByName(searchText)
+                .subscribeOn(Schedulers.io())
+                .flatMap(response -> {
+                    List<Meal> meals = response != null && response.getMeals() != null ? response.getMeals() : Collections.emptyList();
+
+                    List<Single<Meal>> mealSingles = new ArrayList<>();
+                    for (Meal meal : meals) {
+                        Single<Meal> mealSingle = mealRepository.fetchMealImageThumbnail(meal.getStrMealThumb().substring(meal.getStrMealThumb().lastIndexOf("/") + 1))
+                                .subscribeOn(Schedulers.io())
+                                .doOnSubscribe(disposable -> setLoadingStatus(true))
+                                .doFinally(() -> setLoadingStatus(false))
+                                .map(imageResponseBody -> {
+                                    try {
+                                        meal.loadMealImageThumbnail(imageResponseBody);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        meal.setMealImageThumbnail(PlaceHolders.getInstance().getPlaceHolderImage());
+                                        meal.setMealImage(PlaceHolders.getInstance().getPlaceHolderImage());
+                                    }
+                                    return meal;
+                                })
+                                .onErrorResumeNext(throwable -> {
+                                    throwable.printStackTrace();
+                                    meal.setMealImageThumbnail(PlaceHolders.getInstance().getPlaceHolderImage());
+                                    meal.setMealImage(PlaceHolders.getInstance().getPlaceHolderImage());
+                                    return Single.just(meal);
+                                });
+
+                        mealSingles.add(mealSingle);
+                    }
+
+                    return Single.zip(mealSingles, mealList -> {
+                        List<Meal> updatedMeals = new ArrayList<>();
+                        for (Object meal : mealList) {
+                            updatedMeals.add((Meal) meal);
+                        }
+                        return updatedMeals;
+                    }).toObservable();
+                })
+                .onErrorResumeNext(throwable -> {
+                    throwable.printStackTrace();
+                    mealListLiveData.postValue(Collections.emptyList());
+                    return Observable.empty();
+                })
+                .doOnNext(meals -> {
+                    if (meals != null) {
+                        mealListLiveData.postValue(meals);
+                    } else {
+                        mealListLiveData.postValue(Collections.emptyList());
+                    }
+                });
     }
 
 
