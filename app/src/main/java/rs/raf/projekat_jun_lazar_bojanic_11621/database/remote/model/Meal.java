@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import okhttp3.ResponseBody;
 import rs.raf.projekat_jun_lazar_bojanic_11621.util.PlaceHolders;
@@ -746,5 +747,24 @@ public class Meal {
     public void loadMealImage(ResponseBody responseBody) throws IOException {
         byte[] bytes = responseBody.bytes();
         this.mealImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+    public String getIngredientForNumber(int num) {
+        try {
+            Field field = getClass().getDeclaredField("strIngredient" + num);
+            return (String) field.get(this);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getMeasureForNumber(int num) {
+        try {
+            Field field = getClass().getDeclaredField("strMeasure" + num);
+            return (String) field.get(this);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

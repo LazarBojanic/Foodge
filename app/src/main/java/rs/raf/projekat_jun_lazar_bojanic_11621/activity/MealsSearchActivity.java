@@ -125,7 +125,9 @@ public class MealsSearchActivity extends AppCompatActivity {
 
     private void initializeListeners() {
         mealListAdapter.setOnMealClickListener(meal -> {
-            //handle on click
+            Intent intent = new Intent(this, MealDetailsActivity.class);
+            intent.putExtra(String.valueOf(R.string.extraIdMeal), meal.getIdMeal());
+            startActivity(intent);
         });
         spinnerCategoryFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

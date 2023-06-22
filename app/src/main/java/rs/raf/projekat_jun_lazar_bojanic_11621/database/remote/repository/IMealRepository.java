@@ -17,7 +17,7 @@ import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.response.MealsRes
 
 public interface IMealRepository {
     @GET("api/json/v1/1/lookup.php")
-    Single<Meal> fetchMealById(@Query("i") String i);
+    Single<MealsResponse> fetchMealById(@Query("i") String i);
 
     @GET("api/json/v1/1/random.php")
     Single<Meal> fetchRandomMeal();

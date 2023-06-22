@@ -39,4 +39,6 @@
     <string name="previous">Previous</string>
     <string name="one">1</string>
     <string name="next">Next</string>
+    <string name="extraIdMeal">EXTRA_ID_MEAL</string>
+    <string name="add_meal">Add Meal</string>
 </resources>
