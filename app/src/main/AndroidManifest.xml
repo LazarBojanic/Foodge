@@ -15,9 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodge">
         <activity
-            android:name=".activity.MealsSearchActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.MealDetailsActivity"
             android:exported="false" />
         <activity

@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.FoodgeDatabase;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.repository.PersonalMealDao;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.repository.ServiceUserDao;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.implementation.ServiceUserService;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.specification.IServiceUserService;
@@ -36,7 +37,11 @@ public class LocalModule {
     public ServiceUserDao provideServiceUserDao(FoodgeDatabase foodgeDatabase) {
         return foodgeDatabase.serviceUserDao();
     }
-
+    @Provides
+    @Singleton
+    public PersonalMealDao providePersonalMealDao(FoodgeDatabase foodgeDatabase) {
+        return foodgeDatabase.personalMealDao();
+    }
     @Provides
     @Singleton
     public IServiceUserService provideServiceUserService(ServiceUserDao serviceUserDao) {

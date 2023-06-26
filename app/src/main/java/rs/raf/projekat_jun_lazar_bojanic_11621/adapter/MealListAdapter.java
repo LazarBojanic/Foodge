@@ -9,30 +9,42 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collections;
 import java.util.List;
 
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
-import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Category;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.model.PersonalMeal;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Meal;
 
 public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.MealViewHolder> {
-    private List<Meal> mealList;
-
+    private List<Meal> mealListRemote;
+    private List<PersonalMeal> personalMealList;
     private OnMealClickListener onMealClickListener;
     public void setOnMealClickListener(OnMealClickListener onMealClickListener) {
         this.onMealClickListener = onMealClickListener;
     }
 
-    public MealListAdapter(List<Meal> mealList) {
-        this.mealList = mealList;
+    public MealListAdapter(List<Meal> mealListRemote, List<PersonalMeal> personalMealList) {
+        this.mealListRemote = mealListRemote;
+        this.personalMealList = personalMealList;
     }
 
-    public List<Meal> getMealList() {
-        return mealList;
+    public List<PersonalMeal> getPersonalMealList() {
+        return personalMealList;
     }
 
-    public void setMealList(List<Meal> mealList) {
-        this.mealList = mealList;
+    public List<Meal> getMealListRemote() {
+        return mealListRemote;
+    }
+
+    public void setMealListRemote(List<Meal> mealListRemote) {
+        this.mealListRemote = mealListRemote;
+        this.personalMealList = Collections.emptyList();
+        notifyDataSetChanged();
+    }
+    public void setMealListLocal(List<PersonalMeal> personalMealList) {
+        this.mealListRemote = Collections.emptyList();;
+        this.personalMealList = personalMealList;
         notifyDataSetChanged();
     }
 
@@ -45,13 +57,19 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.MealVi
 
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
-        Meal meal = mealList.get(position);
-        holder.bind(meal);
+        if(mealListRemote.isEmpty()){
+            PersonalMeal personalMeal = personalMealList.get(position);
+            holder.bindLocal(personalMeal);
+        }
+        else if(personalMealList.isEmpty()){
+            Meal meal = mealListRemote.get(position);
+            holder.bindRemote(meal);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mealList.size();
+        return mealListRemote.size();
     }
     public interface OnMealClickListener {
         void onMealClick(Meal meal);
@@ -66,15 +84,20 @@ public class MealListAdapter extends RecyclerView.Adapter<MealListAdapter.MealVi
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && onMealClickListener != null) {
-                    Meal meal = mealList.get(position);
+                    Meal meal = mealListRemote.get(position);
                     onMealClickListener.onMealClick(meal);
                 }
             });
         }
 
-        public void bind(Meal meal) {
+
+        public void bindRemote(Meal meal) {
             textViewMealName.setText(meal.getStrMeal());
             imageViewMealImageThumbnail.setImageBitmap(meal.getMealImageThumbnail());
+        }
+        public void bindLocal(PersonalMeal personalMeal) {
+            textViewMealName.setText(personalMeal.getStrMeal());
+            imageViewMealImageThumbnail.setImageBitmap(personalMeal.getMealImage());
         }
     }
 }

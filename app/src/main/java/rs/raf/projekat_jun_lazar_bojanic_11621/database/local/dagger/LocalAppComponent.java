@@ -5,6 +5,7 @@ import android.app.Application;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.repository.PersonalMealDao;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.repository.ServiceUserDao;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.implementation.ServiceUserService;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.specification.IServiceUserService;
@@ -13,5 +14,6 @@ import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.service.specificat
 public interface LocalAppComponent {
     Application getApplication();
     IServiceUserService getServiceUserService();
+    PersonalMealDao getPersonalMealDao();
     ServiceUserDao getServiceUserDao();
 }

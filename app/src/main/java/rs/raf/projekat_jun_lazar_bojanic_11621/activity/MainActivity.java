@@ -54,4 +54,12 @@ public class MainActivity extends AppCompatActivity {
     public MainActivityViewModel getMainActivityViewModel(){
         return this.mainActivityViewModel;
     }
+
+    public BottomNavigationView getBottomNavigationView() {
+        return bottomNavigationView;
+    }
+
+    public NavController getNavController() {
+        return navController;
+    }
 }

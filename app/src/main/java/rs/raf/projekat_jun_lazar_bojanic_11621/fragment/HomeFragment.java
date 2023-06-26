@@ -3,11 +3,11 @@ package rs.raf.projekat_jun_lazar_bojanic_11621.fragment;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,7 +22,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
 import rs.raf.projekat_jun_lazar_bojanic_11621.activity.MainActivity;
-import rs.raf.projekat_jun_lazar_bojanic_11621.activity.MealsSearchActivity;
 import rs.raf.projekat_jun_lazar_bojanic_11621.adapter.CategoryListAdapter;
 import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.HomeFragmentViewModel;
 
@@ -36,7 +35,6 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         homeFragmentViewModel = new ViewModelProvider(this).get(HomeFragmentViewModel.class);
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,9 +45,10 @@ public class HomeFragment extends Fragment {
         categoryListAdapter = new CategoryListAdapter(Collections.emptyList());
         recyclerViewCategoryList.setAdapter(categoryListAdapter);
         categoryListAdapter.setOnCategoryClickListener(category -> {
-            Intent intent = new Intent(requireActivity(), MealsSearchActivity.class);
-            intent.putExtra(String.valueOf(R.string.extraStrCategory), category.getStrCategory());
-            startActivity(intent);
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.extraStrCategory), category.getStrCategory());
+            NavHostFragment.findNavController(HomeFragment.this)
+                    .navigate(R.id.fragmentMeals, bundle);
         });
         homeFragmentViewModel.getCategoryListLiveData().observe(getViewLifecycleOwner(), categoryList -> {
             categoryListAdapter.setCategoryList(categoryList);
