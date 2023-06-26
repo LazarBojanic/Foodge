@@ -78,7 +78,9 @@ public class RemoteMealDetailsActivity extends AppCompatActivity {
             }
         });
         floatingActionButtonAddMeal.setOnClickListener(v -> {
-            Log.i(String.valueOf(R.string.foodgeTag), "clicked");
+            Intent addPersonalMealIntent = new Intent(this, AddPersonalMealActivity.class);
+            addPersonalMealIntent.putExtra(String.valueOf(R.string.extraMeal), mealDetailsViewModel.getFullMealLiveData().getValue());
+            startActivity(addPersonalMealIntent);
         });
         mealDetailsViewModel.getFullMealLiveData().observe(this, meal -> {
             if(meal.getStrMealThumb() != null){

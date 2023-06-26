@@ -1,8 +1,13 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model;
 
+import android.text.TextUtils;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.io.Serializable;
 import java.lang.reflect.Field;
 
-public class Meal {
+public class Meal implements Serializable {
     private String idMeal;
     private String strMeal;
     private String strDrinkAlternate;
@@ -653,7 +658,19 @@ public class Meal {
                 ", dateModified='" + dateModified + '\'' +
                 '}';
     }
-
+    public String getRecipe(){
+        StringBuilder recipeStringBuilder = new StringBuilder();
+        for (int i = 1; i <= 20; i++) {
+            String ingredient = getIngredientForNumber(i);
+            String measure =  getMeasureForNumber(i);
+            if(ingredient != null && measure != null){
+                if(!ingredient.isEmpty() && !measure.isEmpty()){
+                    recipeStringBuilder.append(" - ").append(ingredient).append(" (").append(measure).append(")").append("\n");
+                }
+            }
+        }
+        return recipeStringBuilder.toString();
+    }
     public String getIngredientForNumber(int num) {
         try {
             Field field = getClass().getDeclaredField("strIngredient" + num);

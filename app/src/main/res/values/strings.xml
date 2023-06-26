@@ -50,4 +50,12 @@
     <string name="search_by_category">Search by category…</string>
     <string name="search_by_ingredient">Search by ingredient…</string>
     <string name="personalMeals">Personal Meals</string>
+    <string name="extraMeal">EXTRA_MEAL</string>
+    <string name="meal_name">Meal Name</string>
+    <string name="pick_date_of_prep">Pick Date of Prep</string>
+    <string name="meal_type_breakfast_lunch_dinner">Meal Type (Breakfast, Lunch, Dinner)</string>
+    <string name="instructions">Instructions</string>
+    <string name="recipe">Recipe</string>
+    <string name="youtube_link">Youtube Link</string>
+    <string name="main_ingredient">Main Ingredient</string>
 </resources>

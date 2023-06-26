@@ -37,17 +37,10 @@ public class PersonalMeal implements Serializable {
     private String mealImagePath;
     @ColumnInfo
     private Date dateOfPrep;
-
-    @ColumnInfo
-    private String idCategory;
     @ColumnInfo
     private String strCategory;
     @ColumnInfo
-    private String strArea;
-    @ColumnInfo
     private String strIngredient;
-    @ColumnInfo
-    private String strTags;
 
     public Integer getId() {
         return id;
@@ -121,28 +114,12 @@ public class PersonalMeal implements Serializable {
         this.dateOfPrep = dateOfPrep;
     }
 
-    public String getIdCategory() {
-        return idCategory;
-    }
-
-    public void setIdCategory(String idCategory) {
-        this.idCategory = idCategory;
-    }
-
     public String getStrCategory() {
         return strCategory;
     }
 
     public void setStrCategory(String strCategory) {
         this.strCategory = strCategory;
-    }
-
-    public String getStrArea() {
-        return strArea;
-    }
-
-    public void setStrArea(String strArea) {
-        this.strArea = strArea;
     }
 
     public String getStrIngredient() {
@@ -152,16 +129,11 @@ public class PersonalMeal implements Serializable {
     public void setStrIngredient(String strIngredient) {
         this.strIngredient = strIngredient;
     }
+    public PersonalMeal(){
 
-    public String getStrTags() {
-        return strTags;
     }
 
-    public void setStrTags(String strTags) {
-        this.strTags = strTags;
-    }
-
-    public PersonalMeal(Integer id, String idMeal, String strMeal, String mealType, String instructions, String recipe, String strYoutube, String mealImagePath, Date dateOfPrep, String idCategory, String strCategory, String strArea, String strIngredient, String strTags) {
+    public PersonalMeal(Integer id, String idMeal, String strMeal, String mealType, String instructions, String recipe, String strYoutube, String mealImagePath, Date dateOfPrep, String strCategory, String strIngredient) {
         this.id = id;
         this.idMeal = idMeal;
         this.strMeal = strMeal;
@@ -171,11 +143,7 @@ public class PersonalMeal implements Serializable {
         this.strYoutube = strYoutube;
         this.mealImagePath = mealImagePath;
         this.dateOfPrep = dateOfPrep;
-        this.idCategory = idCategory;
         this.strCategory = strCategory;
-        this.strArea = strArea;
         this.strIngredient = strIngredient;
-        this.strTags = strTags;
     }
-
 }

@@ -1,53 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.AddPersonalMealActivity"
-    android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/imageViewMealImage"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        android:src="@drawable/placeholder_image_small" />
-
-    <EditText
-        android:id="@+id/editTextStrMeal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:inputType="text" />
-
-    <TextView
-        android:id="@+id/textViewStrYoutube"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp" />
+    tools:context=".activity.AddPersonalMealActivity">
 
     <LinearLayout
-        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageViewMealImage"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:src="@drawable/placeholder_image_small" />
+
+        <TextView
+            android:id="@+id/textViewStrMealLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Meal Name:"
+            android:textSize="16sp" />
+
         <EditText
-            android:id="@+id/editTextDateOfPrep"
+            android:id="@+id/editTextStrMeal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:inputType="text"
+            android:hint="@string/meal_name"/>
+
+        <TextView
+            android:id="@+id/textViewStrYoutubeLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/youtube_link"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/editTextStrYoutube"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/youtube_link"/>
+
+        <TextView
+            android:id="@+id/textViewDateOfPrepLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="date"
-            android:hint="@string/date_of_prep" />
-        <Button
-            android:id="@+id/buttonShowDatePicker"
-            android:layout_width="wrap_content"
+            android:text="@string/date_of_prep"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:padding="16dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pick Date of Prep" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/editTextDateOfPrep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="date"
+                android:hint="@string/date_of_prep" />
+
+            <Button
+                android:id="@+id/buttonShowDatePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pick_date_of_prep" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewMealTypeLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/meal_type_breakfast_lunch_dinner"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/editTextMealType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/meal_type_breakfast_lunch_dinner"/>
+
+        <TextView
+            android:id="@+id/textViewInstructionsLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/instructions"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/editTextInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/instructions"
+            android:inputType="text|textMultiLine"
+            android:maxLines="150"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="18sp"/>
+
+        <!-- Add labels and EditTexts for the remaining fields below -->
+
+        <TextView
+            android:id="@+id/textViewRecipeLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/recipe"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/editTextRecipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/recipe"
+            android:inputType="text|textMultiLine"
+            android:maxLines="150"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="18sp"/>
+
+        <TextView
+            android:id="@+id/textViewStrCategoryLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/category"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/editTextStrCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/category"/>
+
+        <TextView
+            android:id="@+id/textViewStrIngredientLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/main_ingredient"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/editTextStrIngredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/main_ingredient"/>
+
     </LinearLayout>
-
-
-
-
-</LinearLayout>
+</ScrollView>

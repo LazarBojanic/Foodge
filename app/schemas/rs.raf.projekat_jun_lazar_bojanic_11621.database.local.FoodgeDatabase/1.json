@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "50df3cd0e5a0a60d6e0a120ddf9c4937",
+    "identityHash": "c001253d790684f8c389d5dfaca80c11",
     "entities": [
       {
         "tableName": "service_user",
@@ -63,7 +63,7 @@
       },
       {
         "tableName": "personal_meal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idMeal` TEXT, `strMeal` TEXT, `mealType` TEXT, `instructions` TEXT, `recipe` TEXT, `strYoutube` TEXT, `mealImagePath` TEXT, `dateOfPrep` TEXT, `idCategory` TEXT, `strCategory` TEXT, `strArea` TEXT, `strIngredient` TEXT, `strTags` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idMeal` TEXT, `strMeal` TEXT, `mealType` TEXT, `instructions` TEXT, `recipe` TEXT, `strYoutube` TEXT, `mealImagePath` TEXT, `dateOfPrep` TEXT, `strCategory` TEXT, `strIngredient` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -120,32 +120,14 @@
             "notNull": false
           },
           {
-            "fieldPath": "idCategory",
-            "columnName": "idCategory",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "strCategory",
             "columnName": "strCategory",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "strArea",
-            "columnName": "strArea",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "strIngredient",
             "columnName": "strIngredient",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "strTags",
-            "columnName": "strTags",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -163,7 +145,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '50df3cd0e5a0a60d6e0a120ddf9c4937')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c001253d790684f8c389d5dfaca80c11')"
     ]
   }
 }

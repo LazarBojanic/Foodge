@@ -24,12 +24,8 @@ public interface PersonalMealDao {
     Observable<List<PersonalMeal>> getAllMealsByFirstLetter(String firstLetter);
     @Query("SELECT * FROM personal_meal WHERE strCategory = :strCategory")
     Observable<List<PersonalMeal>> getAllMealsByCategoryName(String strCategory);
-    @Query("SELECT * FROM personal_meal WHERE strArea = :strArea")
-    Observable<List<PersonalMeal>> getAllMealsByArea(String strArea);
     @Query("SELECT * FROM personal_meal WHERE strIngredient = :strIngredient")
     Observable<List<PersonalMeal>> getAllMealsByIngredient(String strIngredient);
-    @Query("SELECT * FROM personal_meal WHERE strTags LIKE '%' || :strTag || '%'")
-    Observable<List<PersonalMeal>> getAllMealsByTag(String strTag);
     @Query("UPDATE personal_meal SET strMeal = :strMeal WHERE id = :id")
     Completable updatePersonalMealById(Integer id, String strMeal);
     @Query("DELETE FROM personal_meal WHERE id = :id")
