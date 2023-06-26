@@ -27,13 +27,13 @@
     <string name="stats">Stats</string>
     <string name="extraIdCategory">EXTRA_ID_CATEGORY</string>
     <string name="extraStrCategory">EXTRA_STR_CATEGORY</string>
-    <string name="categoryImageThumbnail">Category Image Thumbnail</string>
-    <string name="mealImageThumbnail">Meal Image Thumbnail</string>
+    <string name="categoryImage">Category Image</string>
+    <string name="mealImage">Meal Image</string>
     <string name="category">Category</string>
     <string name="area">Area</string>
     <string name="ingredient">Ingredient</string>
     <string name="tag">Tag</string>
-    <string name="search_by_name">Search by name...</string>
+    <string name="search_by_name">Search by name…</string>
     <string name="sort_by">Sort By</string>
     <string name="name">Name</string>
     <string name="previous">Previous</string>
@@ -43,4 +43,11 @@
     <string name="add_meal">Add Meal</string>
     <string name="personal">Personal</string>
     <string name="web">Web</string>
+    <string name="date_of_prep">Date of Prep</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="extraPersonalMeal">EXTRA_PERSONAL_MEAL</string>
+    <string name="search_by_category">Search by category…</string>
+    <string name="search_by_ingredient">Search by ingredient…</string>
+    <string name="personalMeals">Personal Meals</string>
 </resources>

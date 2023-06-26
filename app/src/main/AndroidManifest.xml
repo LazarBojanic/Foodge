@@ -15,7 +15,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodge">
         <activity
-            android:name=".activity.MealDetailsActivity"
+            android:name=".activity.PersonalMealsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DeletePersonalMealActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.EditPersonalMealActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AddPersonalMealActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.RemoteMealDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"

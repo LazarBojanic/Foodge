@@ -6,9 +6,9 @@
 
     <fragment
         android:id="@+id/fragmentMeals"
-        android:name="rs.raf.projekat_jun_lazar_bojanic_11621.fragment.MealsFragment"
+        android:name="rs.raf.projekat_jun_lazar_bojanic_11621.fragment.RemoteMealsFragment"
         android:label="Meals Fragment"
-        tools:layout="@layout/fragment_meals">
+        tools:layout="@layout/fragment_remote_meals">
         <action
             android:id="@+id/actionFragmentMealsToFragmentHome"
             app:destination="@id/fragmentHome" />

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e763f03317a7335c76a7f4f49ac3accc",
+    "identityHash": "50df3cd0e5a0a60d6e0a120ddf9c4937",
     "entities": [
       {
         "tableName": "service_user",
@@ -63,7 +63,7 @@
       },
       {
         "tableName": "personal_meal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idMeal` TEXT, `strMeal` TEXT, `strYoutube` TEXT, `mealImagePath` TEXT, `dateOfPrep` TEXT, `idCategory` TEXT, `strCategory` TEXT, `strArea` TEXT, `strIngredient` TEXT, `strTags` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idMeal` TEXT, `strMeal` TEXT, `mealType` TEXT, `instructions` TEXT, `recipe` TEXT, `strYoutube` TEXT, `mealImagePath` TEXT, `dateOfPrep` TEXT, `idCategory` TEXT, `strCategory` TEXT, `strArea` TEXT, `strIngredient` TEXT, `strTags` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -80,6 +80,24 @@
           {
             "fieldPath": "strMeal",
             "columnName": "strMeal",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mealType",
+            "columnName": "mealType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "instructions",
+            "columnName": "instructions",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "recipe",
+            "columnName": "recipe",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -145,7 +163,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e763f03317a7335c76a7f4f49ac3accc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '50df3cd0e5a0a60d6e0a120ddf9c4937')"
     ]
   }
 }

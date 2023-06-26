@@ -18,12 +18,7 @@ public class PlaceHolders {
         }
         return instance;
     }
-    public Bitmap getPlaceHolderImage() {
-        Drawable drawable = ContextCompat.getDrawable(FoodgeApp.getInstance().getApplicationContext(), R.drawable.placeholder_image_small);
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
+    public Drawable getPlaceHolderImage() {
+        return ContextCompat.getDrawable(FoodgeApp.getInstance().getApplicationContext(), R.drawable.placeholder_image_small);
     }
 }

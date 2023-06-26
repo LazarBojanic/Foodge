@@ -10,13 +10,15 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Date;
 
 import rs.raf.projekat_jun_lazar_bojanic_11621.util.DateConverter;
+import rs.raf.projekat_jun_lazar_bojanic_11621.util.PlaceHolders;
 
 @Entity(tableName = "personal_meal")
 @TypeConverters(DateConverter.class)
-public class PersonalMeal {
+public class PersonalMeal implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private Integer id;
     @ColumnInfo
@@ -24,13 +26,18 @@ public class PersonalMeal {
     @ColumnInfo
     private String strMeal;
     @ColumnInfo
+    private String mealType;
+    @ColumnInfo
+    private String instructions;
+    @ColumnInfo
+    private String recipe;
+    @ColumnInfo
     private String strYoutube;
     @ColumnInfo
     private String mealImagePath;
-    @Ignore
-    private Bitmap mealImage;
     @ColumnInfo
     private Date dateOfPrep;
+
     @ColumnInfo
     private String idCategory;
     @ColumnInfo
@@ -66,6 +73,30 @@ public class PersonalMeal {
         this.strMeal = strMeal;
     }
 
+    public String getMealType() {
+        return mealType;
+    }
+
+    public void setMealType(String mealType) {
+        this.mealType = mealType;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+
+    public String getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(String recipe) {
+        this.recipe = recipe;
+    }
+
     public String getStrYoutube() {
         return strYoutube;
     }
@@ -80,14 +111,6 @@ public class PersonalMeal {
 
     public void setMealImagePath(String mealImagePath) {
         this.mealImagePath = mealImagePath;
-    }
-
-    public Bitmap getMealImage() {
-        return mealImage;
-    }
-
-    public void setMealImage(Bitmap mealImage) {
-        this.mealImage = mealImage;
     }
 
     public Date getDateOfPrep() {
@@ -138,10 +161,13 @@ public class PersonalMeal {
         this.strTags = strTags;
     }
 
-    public PersonalMeal(Integer id, String idMeal, String strMeal, String strYoutube, String mealImagePath, Date dateOfPrep, String idCategory, String strCategory, String strArea, String strIngredient, String strTags) {
+    public PersonalMeal(Integer id, String idMeal, String strMeal, String mealType, String instructions, String recipe, String strYoutube, String mealImagePath, Date dateOfPrep, String idCategory, String strCategory, String strArea, String strIngredient, String strTags) {
         this.id = id;
         this.idMeal = idMeal;
         this.strMeal = strMeal;
+        this.mealType = mealType;
+        this.instructions = instructions;
+        this.recipe = recipe;
         this.strYoutube = strYoutube;
         this.mealImagePath = mealImagePath;
         this.dateOfPrep = dateOfPrep;
@@ -152,26 +178,4 @@ public class PersonalMeal {
         this.strTags = strTags;
     }
 
-    public PersonalMeal(Integer id, String idMeal, String strMeal, String strYoutube, String mealImagePath, Bitmap mealImage, Date dateOfPrep, String idCategory, String strCategory, String strArea, String strIngredient, String strTags) {
-        this.id = id;
-        this.idMeal = idMeal;
-        this.strMeal = strMeal;
-        this.strYoutube = strYoutube;
-        this.mealImagePath = mealImagePath;
-        this.mealImage = mealImage;
-        this.dateOfPrep = dateOfPrep;
-        this.idCategory = idCategory;
-        this.strCategory = strCategory;
-        this.strArea = strArea;
-        this.strIngredient = strIngredient;
-        this.strTags = strTags;
-    }
-    public void loadPersonalMealImage(){
-        File imageFile = new File(this.mealImagePath);
-        if (imageFile.exists()) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.RGB_565;
-            this.mealImage = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
-        }
-    }
 }

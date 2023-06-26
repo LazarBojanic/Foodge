@@ -6,7 +6,7 @@
     android:id="@+id/fragmentMeals"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.MealsFragment">
+    tools:context=".activity.PersonalMealsActivity">
 
     <LinearLayout
         android:id="@+id/linearElements"
@@ -14,114 +14,26 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <GridLayout
-            android:id="@+id/gridLayoutFilters"
+        <EditText
+            android:id="@+id/editTextSearchCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:rowCount="2"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                android:id="@+id/textCategoryFilterLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/category"
-                android:textSize="18sp"
-                android:layout_gravity="center"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="3"/>
-
-            <Spinner
-                android:id="@+id/spinnerCategoryFilter"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="2"
-                android:layout_rowWeight="3">
-            </Spinner>
-
-            <TextView
-                android:id="@+id/textAreaFilterLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/area"
-                android:textSize="18sp"
-                android:layout_gravity="center"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="3"/>
-
-            <Spinner
-                android:id="@+id/spinnerAreaFilter"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="2"
-                android:layout_rowWeight="3">
-            </Spinner>
-
-            <TextView
-                android:id="@+id/textIngredientFilterLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ingredient"
-                android:textSize="18sp"
-                android:layout_gravity="center"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="3"/>
-
-            <Spinner
-                android:id="@+id/spinnerIngredientFilter"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="2"
-                android:layout_rowWeight="3">
-            </Spinner>
-
-            <TextView
-                android:id="@+id/textTagFilterLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tag"
-                android:textSize="18sp"
-                android:layout_gravity="center"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="3"/>
-
-            <Spinner
-                android:id="@+id/spinnerTagFilter"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="2"
-                android:layout_rowWeight="3">
-            </Spinner>
-
-        </GridLayout>
-
-        <RadioGroup
-            android:id="@+id/radioGroupRepositoryOptions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <RadioButton
-                android:id="@+id/radioButtonPersonal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/personal" />
-
-            <RadioButton
-                android:id="@+id/radioButtonWeb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/web" />
-
-        </RadioGroup>
+            android:hint="@string/search_by_category"
+            android:padding="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="4dp" />
 
         <EditText
-            android:id="@+id/editTextSearch"
+            android:id="@+id/editTextSearchIngredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/search_by_ingredient"
+            android:padding="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginHorizontal="4dp" />
+
+        <EditText
+            android:id="@+id/editTextSearchName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_by_name"
@@ -183,10 +95,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMealList"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="300dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-
-
 
         <LinearLayout
             android:id="@+id/linearPagination"

@@ -9,11 +9,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Category;
-import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Meal;
+import rs.raf.projekat_jun_lazar_bojanic_11621.util.PlaceHolders;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
     private List<Category> categoryList;
@@ -58,11 +60,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     class CategoryViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewCategoryName;
-        private ImageView imageViewCategoryImageThumbnail;
+        private ImageView imageViewCategoryImage;
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewCategoryName = itemView.findViewById(R.id.textViewCategoryName);
-            imageViewCategoryImageThumbnail = itemView.findViewById(R.id.imageViewCategoryImageThumbnail);
+            imageViewCategoryImage = itemView.findViewById(R.id.imageViewCategoryImage);
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && onCategoryClickListener != null) {
@@ -74,7 +76,10 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
         public void bind(Category category) {
             textViewCategoryName.setText(category.getStrCategory());
-            imageViewCategoryImageThumbnail.setImageBitmap(category.getCategoryImageThumbnail());
+            Glide.with(itemView)
+                    .load(category.getStrCategoryThumb())
+                    .error(PlaceHolders.getInstance().getPlaceHolderImage())
+                    .placeholder(PlaceHolders.getInstance().getPlaceHolderImage()).into(imageViewCategoryImage);
         }
     }
 }

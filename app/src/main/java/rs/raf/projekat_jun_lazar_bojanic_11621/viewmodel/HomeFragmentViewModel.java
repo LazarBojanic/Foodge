@@ -50,38 +50,7 @@ public class HomeFragmentViewModel extends ViewModel {
                 .doFinally(() -> setLoadingStatus(false))
                 .flatMap(response -> {
                     List<Category> categories = response.getCategories();
-                    List<Single<Category>> categorySingles = new ArrayList<>();
-                    for (Category category : categories) {
-                        Single<Category> categorySingle = categoryRepository.fetchCategoryImage(category.getStrCategoryThumb().substring(category.getStrCategoryThumb().lastIndexOf("/") + 1))
-                                .subscribeOn(Schedulers.io())
-                                .doOnSubscribe(disposable -> setLoadingStatus(true))
-                                .doFinally(() -> setLoadingStatus(false))
-                                .map(imageResponseBody -> {
-                                    try {
-                                        category.loadCategoryImageThumbnail(imageResponseBody);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        category.setCategoryImageThumbnail(PlaceHolders.getInstance().getPlaceHolderImage());
-                                    }
-                                    return category;
-                                })
-                                .onErrorResumeNext(throwable -> {
-                                    throwable.printStackTrace();
-                                    return Single.just(new Category());
-                                });
-
-                        categorySingles.add(categorySingle);
-                    }
-
-                    return Single.zip(categorySingles, categoryList -> {
-                        List<Category> updatedCategories = new ArrayList<>();
-                        for (Object category : categoryList) {
-                            if (category instanceof Category) {
-                                updatedCategories.add((Category) category);
-                            }
-                        }
-                        return updatedCategories;
-                    }).toObservable();
+                    return Observable.just(categories);
                 })
                 .doOnNext(categories -> {
                     mainActivityViewModel.setCachedCategoryList(categories);
@@ -89,9 +58,10 @@ public class HomeFragmentViewModel extends ViewModel {
                 })
                 .onErrorResumeNext(throwable -> {
                     // Handle the error and return a fallback list of categories or an empty list
-                    return Observable.just(new ArrayList<Category>());  // Replace with appropriate fallback logic
+                    return Observable.just(new ArrayList<Category>()); // Replace with appropriate fallback logic
                 });
     }
+
 
 
     private void setLoadingStatus(boolean isLoading) {

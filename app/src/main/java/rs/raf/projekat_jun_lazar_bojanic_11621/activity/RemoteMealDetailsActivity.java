@@ -1,8 +1,11 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,17 +23,21 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.File;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
+import rs.raf.projekat_jun_lazar_bojanic_11621.util.PlaceHolders;
 import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.MealDetailsViewModel;
 
-public class MealDetailsActivity extends AppCompatActivity {
+public class RemoteMealDetailsActivity extends AppCompatActivity {
     private MealDetailsViewModel mealDetailsViewModel;
     private ProgressBar progressBarLoading;
-    private ImageView imageViewMeal;
+    private ImageView imageViewMealImage;
     private TextView textViewMealName;
     private TextView textViewCategory;
     private TextView textViewArea;
@@ -37,14 +45,15 @@ public class MealDetailsActivity extends AppCompatActivity {
     private LinearLayout ingredientsContainer;
     private TextView textViewYoutubeLink;
     private FloatingActionButton floatingActionButtonAddMeal;
+    String receivedIdMeal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meal_details);
+        setContentView(R.layout.activity_remote_meal_details);
         mealDetailsViewModel = new ViewModelProvider(this).get(MealDetailsViewModel.class);
 
         progressBarLoading = findViewById(R.id.progressBarLoading);
-        imageViewMeal = findViewById(R.id.imageViewMeal);
+        imageViewMealImage = findViewById(R.id.imageViewMealImage);
         textViewMealName = findViewById(R.id.textViewMealName);
         textViewCategory = findViewById(R.id.textViewCategory);
         textViewArea = findViewById(R.id.textViewArea);
@@ -53,7 +62,7 @@ public class MealDetailsActivity extends AppCompatActivity {
         textViewYoutubeLink = findViewById(R.id.textViewYoutubeLink);
         floatingActionButtonAddMeal = findViewById(R.id.floatingActionButtonAddMeal);
         Intent intent = getIntent();
-        String receivedIdMeal = intent.getStringExtra(String.valueOf(R.string.extraIdMeal));
+        receivedIdMeal = intent.getStringExtra(String.valueOf(R.string.extraIdMeal));
 
         mealDetailsViewModel.getLoadingStatusLiveData().observe(this, isLoading -> {
             if (isLoading) {
@@ -72,7 +81,19 @@ public class MealDetailsActivity extends AppCompatActivity {
             Log.i(String.valueOf(R.string.foodgeTag), "clicked");
         });
         mealDetailsViewModel.getFullMealLiveData().observe(this, meal -> {
-            imageViewMeal.setImageBitmap(meal.getMealImageThumbnail());
+            if(meal.getStrMealThumb() != null){
+                Glide.with(this)
+                        .load(meal.getStrMealThumb())
+                        .error(PlaceHolders.getInstance().getPlaceHolderImage())
+                        .placeholder(PlaceHolders.getInstance().getPlaceHolderImage()).into(imageViewMealImage);
+            }
+            else{
+                Glide.with(this)
+                        .load(PlaceHolders.getInstance().getPlaceHolderImage())
+                        .error(PlaceHolders.getInstance().getPlaceHolderImage())
+                        .placeholder(PlaceHolders.getInstance().getPlaceHolderImage())
+                        .into(imageViewMealImage);
+            }
             textViewMealName.setText(meal.getStrMeal());
             textViewCategory.setText(meal.getStrCategory());
             textViewArea.setText(meal.getStrArea());
@@ -96,12 +117,10 @@ public class MealDetailsActivity extends AppCompatActivity {
             makeLinkClickable(textViewYoutubeLink);
         });
 
-
         mealDetailsViewModel.fetchMealDetails(receivedIdMeal)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
-
 
     }
 

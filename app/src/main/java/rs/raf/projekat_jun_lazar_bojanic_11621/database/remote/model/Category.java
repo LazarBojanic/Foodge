@@ -11,7 +11,7 @@ import okhttp3.ResponseBody;
 
 public class Category {
     @JsonIgnore
-    private transient Bitmap categoryImageThumbnail;
+    private transient Bitmap categoryImage;
     private String idCategory;
     private String strCategory;
     private String strCategoryThumb;
@@ -27,8 +27,8 @@ public class Category {
         this.strCategoryDescription = strCategoryDescription;
     }
 
-    public Category(Bitmap categoryImageThumbnail, String idCategory, String strCategory, String strCategoryThumb, String strCategoryDescription) {
-        this.categoryImageThumbnail = categoryImageThumbnail;
+    public Category(Bitmap categoryImage, String idCategory, String strCategory, String strCategoryThumb, String strCategoryDescription) {
+        this.categoryImage = categoryImage;
         this.idCategory = idCategory;
         this.strCategory = strCategory;
         this.strCategoryThumb = strCategoryThumb;
@@ -67,18 +67,18 @@ public class Category {
         this.strCategoryDescription = strCategoryDescription;
     }
 
-    public Bitmap getCategoryImageThumbnail() {
-        return categoryImageThumbnail;
+    public Bitmap getCategoryImage() {
+        return categoryImage;
     }
 
-    public void setCategoryImageThumbnail(Bitmap categoryImageThumbnail) {
-        this.categoryImageThumbnail = categoryImageThumbnail;
+    public void setCategoryImage(Bitmap categoryImage) {
+        this.categoryImage = categoryImage;
     }
 
     @Override
     public String toString() {
         return "Category{" +
-                "categoryImageThumbnail=" + categoryImageThumbnail +
+                "categoryImageThumbnail=" + categoryImage +
                 ", idCategory='" + idCategory + '\'' +
                 ", strCategory='" + strCategory + '\'' +
                 ", strCategoryThumb='" + strCategoryThumb + '\'' +
@@ -86,8 +86,8 @@ public class Category {
                 '}';
     }
 
-    public void loadCategoryImageThumbnail(ResponseBody responseBody) throws IOException {
+    public void loadCategoryImage(ResponseBody responseBody) throws IOException {
         byte[] bytes = responseBody.bytes();
-        this.categoryImageThumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        this.categoryImage = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 }
