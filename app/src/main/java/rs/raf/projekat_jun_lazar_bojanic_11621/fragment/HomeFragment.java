@@ -47,8 +47,8 @@ public class HomeFragment extends Fragment {
         categoryListAdapter.setOnCategoryClickListener(category -> {
             Bundle bundle = new Bundle();
             bundle.putString(getString(R.string.extraStrCategory), category.getStrCategory());
-            NavHostFragment.findNavController(HomeFragment.this)
-                    .navigate(R.id.fragmentMeals, bundle);
+            NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.fragmentMeals, bundle);
+            ((MainActivity) requireActivity()).updateSelectedItem(R.id.itemMeals);
         });
         homeFragmentViewModel.getCategoryListLiveData().observe(getViewLifecycleOwner(), categoryList -> {
             categoryListAdapter.setCategoryList(categoryList);

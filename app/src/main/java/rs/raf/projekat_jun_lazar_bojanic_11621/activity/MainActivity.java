@@ -7,6 +7,7 @@ import androidx.navigation.NavGraph;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -50,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+    }
+    public void updateSelectedItem(int destinationId) {
+        MenuItem menuItem = bottomNavigationView.getMenu().findItem(destinationId);
+        if (menuItem != null) {
+            menuItem.setChecked(true);
+        }
     }
     public MainActivityViewModel getMainActivityViewModel(){
         return this.mainActivityViewModel;
