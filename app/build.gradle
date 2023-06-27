@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'io.franzbecker.gradle-lombok' version '5.0.0'
 }
-
 android {
     namespace 'rs.raf.projekat_jun_lazar_bojanic_11621'
     compileSdk 33
@@ -77,7 +76,7 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.6'
     //Room with RxJava3
-    def room_version = "2.5.1"
+    def room_version = "2.5.2"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-guava:$room_version"
@@ -89,7 +88,6 @@ dependencies {
     //Retrofit with Jackson (Gson) and RxJava3
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
-    //implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
     //Commons
     implementation 'commons-io:commons-io:2.12.0'
@@ -97,5 +95,7 @@ dependencies {
     //Bcrypt
     implementation 'at.favre.lib:bcrypt:0.10.2'
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    //MPAndroidChart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

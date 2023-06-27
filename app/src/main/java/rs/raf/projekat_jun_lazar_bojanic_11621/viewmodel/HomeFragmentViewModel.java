@@ -27,11 +27,11 @@ public class HomeFragmentViewModel extends ViewModel {
         loadingStatusLiveData = new MutableLiveData<>();
     }
 
-    public LiveData<List<Category>> getCategoryListLiveData() {
+    public MutableLiveData<List<Category>> getCategoryListLiveData() {
         return categoryListLiveData;
     }
 
-    public LiveData<Boolean> getLoadingStatusLiveData() {
+    public MutableLiveData<Boolean> getLoadingStatusLiveData() {
         return loadingStatusLiveData;
     }
 

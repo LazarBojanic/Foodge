@@ -31,7 +31,6 @@ public class PersonalMeal implements Serializable {
     private String mealImagePath;
     @ColumnInfo
     private Date dateOfPrep;
-
     public Integer getId() {
         return id;
     }

@@ -10,6 +10,7 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.model.PersonalMeal;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.model.PersonalMealCountByDate;
 
 @Dao
 public interface PersonalMealDao {
@@ -31,5 +32,10 @@ public interface PersonalMealDao {
     Completable updatePersonalMealById(Integer id, String strMeal);
     @Query("DELETE FROM personal_meal WHERE id = :id")
     Completable deletePersonalMealById(Integer id);
-
+    @Query("SELECT COUNT(*) AS personalMealCount, dateOfPrep " +
+            "FROM personal_meal " +
+            "WHERE dateOfPrep > strftime('%Y-%m-%d', 'now', '-7 days') " +
+            "GROUP BY dateOfPrep " +
+            "ORDER BY dateOfPrep DESC")
+    Observable<List<PersonalMealCountByDate>> getPersonalMealCountsByDate();
 }

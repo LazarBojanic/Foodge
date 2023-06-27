@@ -51,7 +51,7 @@ public class RemoteMealsFragmentViewModel extends ViewModel {
         ingredientRepository = FoodgeApp.getInstance().getRemoteAppComponent().getIngredientRepository();
         mealRepositoryRemote = FoodgeApp.getInstance().getRemoteAppComponent().getMealRepository();
     }
-    public LiveData<List<String>> getSimpleCategoryListLiveData() {
+    public MutableLiveData<List<String>> getSimpleCategoryListLiveData() {
         return simpleCategoryListLiveData;
     }
 
@@ -63,11 +63,11 @@ public class RemoteMealsFragmentViewModel extends ViewModel {
         return simpleIngredientListLiveData;
     }
 
-    public LiveData<List<Meal>> getRemoteMealListLiveData() {
+    public MutableLiveData<List<Meal>> getRemoteMealListLiveData() {
         return remoteMealListLiveData;
     }
 
-    public LiveData<Boolean> getLoadingStatusLiveData() {
+    public MutableLiveData<Boolean> getLoadingStatusLiveData() {
         return loadingStatusLiveData;
     }
 
