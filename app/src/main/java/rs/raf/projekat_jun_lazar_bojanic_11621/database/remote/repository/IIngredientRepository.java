@@ -15,7 +15,5 @@ public interface IIngredientRepository {
     @GET("api/json/v1/1/list.php?i=list")
     Observable<IngredientsResponse> fetchAllIngredients();
     @GET("images/ingredients/{ingredientImageName}-Small")
-    Single<Image> fetchIngredientImageThumbnail(@Path("ingredientImageName") String ingredientImageName);
-    @GET("images/ingredients/{ingredientImageName}")
     Single<Image> fetchIngredientImage(@Path("ingredientImageName") String ingredientImageName);
 }

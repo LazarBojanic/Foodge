@@ -19,7 +19,7 @@ public abstract class FoodgeDatabase extends RoomDatabase {
         if (instance == null) {
             synchronized (FoodgeDatabase.class) {
                 if (instance == null) {
-                    instance = Room.databaseBuilder(application, FoodgeDatabase.class, "foodge_db").build();
+                    instance = Room.databaseBuilder(application, FoodgeDatabase.class, "foodge_db.db").build();
                 }
             }
         }

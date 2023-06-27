@@ -22,7 +22,6 @@
                 android:contentDescription="@string/mealImage"
                 android:scaleType="centerCrop" />
 
-
             <TextView
                 android:id="@+id/textViewMealName"
                 android:layout_width="match_parent"
@@ -86,8 +85,8 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="end|bottom"
-        android:backgroundTint="@color/purple_500"
-        android:foregroundTint="@color/teal_200"
+        android:backgroundTint="?attr/colorPrimary"
+        android:foregroundTint="?attr/colorOnPrimary"
         android:contentDescription="@string/add_meal"
         android:foreground="@drawable/ic_add_meal"
         android:foregroundGravity="center"/>

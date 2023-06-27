@@ -42,7 +42,6 @@ public class PersonalMealsActivity extends AppCompatActivity {
     private Integer pageCount;
     private PersonalMealsActivityViewModel personalMealsActivityViewModel;
     private PersonalMealListAdapter personalMealListAdapter;
-    private ProgressBar progressBarLoading;
     private EditText editTextSearchCategory;
     private EditText editTextSearchIngredient;
     private EditText editTextSearchName;
@@ -63,7 +62,6 @@ public class PersonalMealsActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        progressBarLoading = findViewById(R.id.progressBarLoading);
         buttonPrevPage = findViewById(R.id.buttonPrevPage);
         buttonNextPage = findViewById(R.id.buttonNextPage);
         editTextSearchName = findViewById(R.id.editTextSearchName);
@@ -84,13 +82,7 @@ public class PersonalMealsActivity extends AppCompatActivity {
             pageCount = (int) Math.ceil((double) mealList.size() / PAGE_SIZE);
             updatePaginationButtons();
         });
-        personalMealsActivityViewModel.getLoadingStatusLiveData().observe(this, isLoading -> {
-            if (isLoading) {
-                showLoadingView();
-            } else {
-                hideLoadingView();
-            }
-        });
+
         personalMealsActivityViewModel.setupNameSearchObserver();
         personalMealsActivityViewModel.setupCategorySearchObserver();
         personalMealsActivityViewModel.setupIngredientSearchObserver();
@@ -182,12 +174,6 @@ public class PersonalMealsActivity extends AppCompatActivity {
                 .subscribe();
     }
 
-    private void showLoadingView() {
-        progressBarLoading.setVisibility(View.VISIBLE);
-    }
-    private void hideLoadingView() {
-        progressBarLoading.setVisibility(View.GONE);
-    }
     private List<PersonalMeal> getItemsForPage(List<PersonalMeal> meals, int page) {
         int startIndex = (page - 1) * PAGE_SIZE;
         int endIndex = Math.min(startIndex + PAGE_SIZE, meals.size());
@@ -197,8 +183,4 @@ public class PersonalMealsActivity extends AppCompatActivity {
         buttonPrevPage.setEnabled(currentPage > 1);
         buttonNextPage.setEnabled(currentPage < pageCount);
     }
-
-
-
-
 }

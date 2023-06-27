@@ -1,6 +1,5 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.adapter;
 
-import android.app.Person;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,7 +97,7 @@ public class PersonalMealListAdapter extends RecyclerView.Adapter<PersonalMealLi
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
-                            personalMealDao.getAllMeals()
+                            personalMealDao.getAllPersonalMeals()
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(personalMeals -> {
@@ -112,12 +111,30 @@ public class PersonalMealListAdapter extends RecyclerView.Adapter<PersonalMealLi
         public void bindLocal(PersonalMeal personalMeal) {
             this.personalMeal = personalMeal;
             textViewMealName.setText(this.personalMeal.getStrMeal());
-            File file = new File(personalMeal.getMealImagePath());
-            Glide.with(itemView)
-                    .load(file)
-                    .error(PlaceHolders.getInstance().getPlaceHolderImage())
-                    .placeholder(PlaceHolders.getInstance().getPlaceHolderImage())
-                    .into(imageViewMealImage);
+            if(personalMeal.getMealImagePath() != null){
+                if(personalMeal.getMealImagePath().contains("http")){
+                    Glide.with(itemView)
+                            .load(personalMeal.getMealImagePath())
+                            .error(PlaceHolders.getInstance().getPlaceHolderImage())
+                            .placeholder(PlaceHolders.getInstance().getPlaceHolderImage())
+                            .into(imageViewMealImage);
+                }
+                else{
+                    File file = new File(personalMeal.getMealImagePath());
+                    Glide.with(itemView)
+                            .load(file)
+                            .error(PlaceHolders.getInstance().getPlaceHolderImage())
+                            .placeholder(PlaceHolders.getInstance().getPlaceHolderImage())
+                            .into(imageViewMealImage);
+                }
+            }
+            else{
+                Glide.with(itemView)
+                        .load(PlaceHolders.getInstance().getPlaceHolderImage())
+                        .error(PlaceHolders.getInstance().getPlaceHolderImage())
+                        .placeholder(PlaceHolders.getInstance().getPlaceHolderImage())
+                        .into(imageViewMealImage);
+            }
         }
     }
 }

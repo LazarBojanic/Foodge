@@ -58,4 +58,7 @@
     <string name="recipe">Recipe</string>
     <string name="youtube_link">Youtube Link</string>
     <string name="main_ingredient">Main Ingredient</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="meal_image_path">Meal Image Path</string>
 </resources>
