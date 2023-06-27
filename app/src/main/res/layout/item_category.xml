@@ -5,20 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:gravity="start">
 
     <TextView
+        android:layout_margin="2dp"
         android:id="@+id/textViewCategoryName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:padding="4dp"/>
+        android:ems="8"
+        android:textSize="16sp"/>
 
     <ImageView
+        android:layout_margin="2dp"
         android:id="@+id/imageViewCategoryImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="4dp"
         android:contentDescription="@string/categoryImage" />
+
+    <Button
+        android:layout_margin="2dp"
+        android:id="@+id/buttonShowCategoryDescription"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:foreground="@drawable/ic_category_description_24dp"
+        android:foregroundGravity="center"
+        android:foregroundTint="?attr/colorOnPrimary"/>
 
 </LinearLayout>

@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
         RecyclerView recyclerViewCategoryList = view.findViewById(R.id.recyclerViewCategoryList);
         recyclerViewCategoryList.setLayoutManager(new LinearLayoutManager(requireContext()));
         progressBarLoading = view.findViewById(R.id.progressBarLoading);
-        categoryListAdapter = new CategoryListAdapter(Collections.emptyList());
+        categoryListAdapter = new CategoryListAdapter(Collections.emptyList(), requireActivity());
         recyclerViewCategoryList.setAdapter(categoryListAdapter);
         categoryListAdapter.setOnCategoryClickListener(category -> {
             Bundle bundle = new Bundle();
