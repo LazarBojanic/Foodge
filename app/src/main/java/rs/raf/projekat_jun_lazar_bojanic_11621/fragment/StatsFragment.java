@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -81,6 +82,11 @@ public class StatsFragment extends Fragment {
             xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
             xAxis.setLabelCount(labels.size());
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+            YAxis yAxisLeft = barChartStats.getAxisLeft();
+            yAxisLeft.setTextColor(getResources().getColor(R.color.colorOnSecondary));
+            YAxis yAxisRight = barChartStats.getAxisRight();
+            yAxisRight.setTextColor(getResources().getColor(R.color.colorOnSecondary));
 
             barChartStats.getLegend().setTextColor(getResources().getColor(R.color.colorOnSecondary));
             barChartStats.setData(barData);
