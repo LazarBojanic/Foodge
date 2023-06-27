@@ -73,7 +73,7 @@ public class EditPersonalMealActivity extends AppCompatActivity {
             personalMeal.setRecipe(receivedPersonalMeal.getRecipe());
             personalMeal.setStrYoutube(receivedPersonalMeal.getStrYoutube());
             personalMeal.setMealImagePath(receivedPersonalMeal.getMealImagePath());
-            personalMeal.setDateOfPrep(Date.from(Instant.now()));
+            personalMeal.setDateOfPrep(receivedPersonalMeal.getDateOfPrep());
             personalMeal.setStrCategory(receivedPersonalMeal.getStrCategory());
             editPersonalMealActivityViewModel.getPersonalMealMutableLiveData().postValue(personalMeal);
         }
