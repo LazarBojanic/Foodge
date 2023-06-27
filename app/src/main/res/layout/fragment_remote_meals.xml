@@ -14,14 +14,20 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <Button
+            android:id="@+id/buttonViewPersonalMeals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/personalMeals"
+            android:layout_gravity="center"/>
+
         <GridLayout
             android:id="@+id/gridLayoutFilters"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
             android:rowCount="2"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp">
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/textCategoryFilterLabel"
@@ -77,56 +83,34 @@
                 android:layout_rowWeight="3">
             </Spinner>
 
-            <TextView
-                android:id="@+id/textTagFilterLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tag"
-                android:textSize="18sp"
-                android:layout_gravity="center"
-                android:layout_columnWeight="1"
-                android:layout_rowWeight="3"/>
-
-            <Spinner
-                android:id="@+id/spinnerTagFilter"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="2"
-                android:layout_rowWeight="3">
-            </Spinner>
-
         </GridLayout>
 
-        <Button
-            android:id="@+id/buttonViewPersonalMeals"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/editTextSearchTag"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/personalMeals"
-            android:layout_gravity="center"/>
+            android:hint="@string/search_by_tag"
+            android:layout_margin="4dp" />
 
         <EditText
-            android:id="@+id/editTextSearch"
+            android:id="@+id/editTextSearchName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/search_by_name"
-            android:padding="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginHorizontal="4dp" />
-
+            android:layout_margin="4dp" />
         <LinearLayout
             android:id="@+id/linearSortOptions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="4dp"
-            android:layout_marginHorizontal="4dp">
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/textSortLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sort_by"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:layout_gravity="center"/>
 
             <RadioGroup
@@ -170,15 +154,13 @@
             android:layout_height="300dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
-
-
         <LinearLayout
             android:id="@+id/linearPagination"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="4dp">
 
             <Button
                 android:id="@+id/buttonPrevPage"
@@ -186,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/previous"
                 android:enabled="false"
-                android:layout_marginEnd="8dp"/>
+                android:layout_margin="4dp"/>
 
             <TextView
                 android:id="@+id/textPageNumber"
@@ -200,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/next"
                 android:enabled="false"
-                android:layout_marginStart="8dp"/>
+                android:layout_marginStart="4dp"/>
 
         </LinearLayout>
 

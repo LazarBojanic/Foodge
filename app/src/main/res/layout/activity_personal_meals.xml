@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/sort_by"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:layout_gravity="center"/>
 
             <RadioGroup
@@ -87,7 +87,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMealList"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="550dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <LinearLayout

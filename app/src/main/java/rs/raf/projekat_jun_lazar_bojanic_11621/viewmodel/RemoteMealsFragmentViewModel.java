@@ -1,5 +1,7 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -14,6 +16,7 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 import rs.raf.projekat_jun_lazar_bojanic_11621.FoodgeApp;
+import rs.raf.projekat_jun_lazar_bojanic_11621.R;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.model.PersonalMeal;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Area;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Category;
@@ -198,10 +201,10 @@ public class RemoteMealsFragmentViewModel extends ViewModel {
     }
     public void setupTagSearchObserver() {
         searchSubjectTag
-                .debounce(300, TimeUnit.MILLISECONDS) // Delay to avoid sending too frequent requests
+                .debounce(10000, TimeUnit.MILLISECONDS) // Delay to avoid sending too frequent requests
                 .distinctUntilChanged() // Only trigger if the text has changed
                 .subscribeOn(Schedulers.io())
-                .switchMap(this::performNameSearchRemote) // Use switchMap to cancel previous requests
+                .switchMap(this::performTagSearchRemote) // Use switchMap to cancel previous requests
                 .subscribe(meals -> remoteMealListLiveData.postValue(meals));
     }
 
@@ -211,16 +214,37 @@ public class RemoteMealsFragmentViewModel extends ViewModel {
     private Observable<List<Meal>> performTagSearchRemote(String searchText) {
         List<Meal> mealList = remoteMealListLiveData.getValue();
         List<Meal> result = new ArrayList<>();
-        if(mealList != null){
-            for(Meal meal : mealList){
-                if(meal.getStrTags().toLowerCase().contains(searchText.toLowerCase())){
-                    result.add(meal);
-                }
-            }
+        loadingStatusLiveData.postValue(true);
+        if (mealList != null) {
+            return Observable.fromIterable(mealList)
+                    .flatMapSingle(meal -> mealRepositoryRemote.fetchMealById(meal.getIdMeal())
+                            .map(response -> {
+                                List<Meal> meals = response.getMeals();
+                                if (meals.isEmpty()) {
+                                    throw new IllegalArgumentException("No meal found for id: " + meal.getIdMeal());
+                                }
+                                Meal fullMeal = meals.get(0);
+                                if(fullMeal != null){
+                                    if(fullMeal.getStrTags() != null){
+                                        if (fullMeal.getStrTags().toLowerCase().contains(searchText.toLowerCase())) {
+                                            result.add(meal);
+                                        }
+                                    }
+                                }
+                                return meal;
+                            })
+                    )
+                    .toList()
+                    .doOnSuccess(ignored -> remoteMealListLiveData.postValue(result))
+                    .doFinally(() -> loadingStatusLiveData.postValue(false))
+                    .toObservable();
+        } else {
+            return Observable.just(result);
         }
-        remoteMealListLiveData.postValue(result);
-        return Observable.just(result);
     }
+
+
+
     private void setLoadingStatus(boolean isLoading) {
         loadingStatusLiveData.postValue(isLoading);
     }

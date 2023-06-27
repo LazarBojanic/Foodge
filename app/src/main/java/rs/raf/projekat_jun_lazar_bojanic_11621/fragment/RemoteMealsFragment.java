@@ -56,11 +56,10 @@ public class RemoteMealsFragment extends Fragment {
     private Spinner spinnerIngredientFilter;
     private Button buttonViewPersonalMeals;
     private EditText editTextSearchName;
-    //private Spinner spinnerTagFilter;
+    private EditText editTextSearchTag;
     ArrayAdapter<String> spinnerCategoryFilterAdapter;
     ArrayAdapter<String> spinnerAreaFilterAdapter;
     ArrayAdapter<String> spinnerIngredientFilterAdapter;
-    //ArrayAdapter<String> spinnerTagFilterAdapter;
     private Button buttonPrevPage;
     private Button buttonNextPage;
     RecyclerView recyclerViewMealList;
@@ -91,11 +90,11 @@ public class RemoteMealsFragment extends Fragment {
         spinnerCategoryFilter = view.findViewById(R.id.spinnerCategoryFilter);
         spinnerAreaFilter = view.findViewById(R.id.spinnerAreaFilter);
         spinnerIngredientFilter = view.findViewById(R.id.spinnerIngredientFilter);
-        //spinnerTagFilter = findViewById(R.id.spinnerTagFilter);
         buttonPrevPage = view.findViewById(R.id.buttonPrevPage);
         buttonNextPage = view.findViewById(R.id.buttonNextPage);
         buttonViewPersonalMeals = view.findViewById(R.id.buttonViewPersonalMeals);
-        editTextSearchName = view.findViewById(R.id.editTextSearch);
+        editTextSearchName = view.findViewById(R.id.editTextSearchName);
+        editTextSearchTag= view.findViewById(R.id.editTextSearchTag);
         recyclerViewMealList = view.findViewById(R.id.recyclerViewMealList);
         recyclerViewMealList.setLayoutManager(new LinearLayoutManager(requireActivity()));
         remoteMealListAdapter = new RemoteMealListAdapter(Collections.emptyList());
@@ -142,12 +141,8 @@ public class RemoteMealsFragment extends Fragment {
             spinnerIngredientFilterAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
             spinnerIngredientFilter.setAdapter(spinnerIngredientFilterAdapter);
         });
-        /*mealsSearchActivityViewModel.getSimpleCategoryListLiveData().observe(this, categories -> {
-            spinnerTagFilterAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, categories);
-            spinnerTagFilterAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-            spinnerCategoryFilter.setAdapter(spinnerTagFilterAdapter);
-        });*/
         remoteMealsFragmentViewModel.setupNameSearchObserver();
+        remoteMealsFragmentViewModel.setupTagSearchObserver();
     }
 
     private void initializeListeners() {
@@ -224,20 +219,7 @@ public class RemoteMealsFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        /*spinnerCategoryFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedStrCategory = spinnerCategoryFilter.getItemAtPosition(position).toString();
-                Log.i(String.valueOf(R.string.foodgeTag), selectedStrCategory);
-                mealsSearchActivityViewModel.fetchAllMealsForCategory(selectedStrCategory)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });*/
+
         editTextSearchName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -248,6 +230,24 @@ public class RemoteMealsFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Log.i(String.valueOf(R.string.foodgeTag), s.toString());
                 remoteMealsFragmentViewModel.onNameSearchTextChanged(s.toString());
+                remoteMealListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Not used
+            }
+        });
+        editTextSearchTag.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not used
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.i(String.valueOf(R.string.foodgeTag), s.toString());
+                remoteMealsFragmentViewModel.onTagSearchTextChanged(s.toString());
                 remoteMealListAdapter.notifyDataSetChanged();
             }
 
