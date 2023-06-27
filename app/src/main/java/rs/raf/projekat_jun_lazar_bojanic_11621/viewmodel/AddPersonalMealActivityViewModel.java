@@ -24,6 +24,6 @@ public class AddPersonalMealActivityViewModel extends ViewModel {
         this.personalMealMutableLiveData = personalMealMutableLiveData;
     }
     public Completable addPersonalMeal(PersonalMeal personalMeal){
-        return personalMealDao.addPersonalMeal(personalMeal).ignoreElement();
+        return Completable.fromSingle(personalMealDao.addPersonalMeal(personalMeal));
     }
 }

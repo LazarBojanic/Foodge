@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.RemoteMealDetailsActivity"
+    tools:context=".activity.PersonalMealDetailsActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ScrollView
         android:layout_width="match_parent"
@@ -13,7 +13,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
-
             <ImageView
                 android:id="@+id/imageViewMealImage"
                 android:layout_width="match_parent"
@@ -22,7 +21,13 @@
                 android:scaleType="centerCrop" />
 
             <TextView
-                android:id="@+id/textViewMealName"
+                android:id="@+id/textViewMealImagePath"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp" />
+
+            <TextView
+                android:id="@+id/textViewStrMeal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="16dp"
@@ -30,13 +35,24 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textViewCategory"
+                android:id="@+id/textViewStrCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp" />
+            <TextView
+                android:id="@+id/textViewMealType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp" />
 
             <TextView
-                android:id="@+id/textViewArea"
+                android:id="@+id/textViewStrYoutube"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp" />
+
+            <TextView
+                android:id="@+id/textViewDateOfPrep"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp" />
@@ -46,7 +62,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp" />
-
             <TextView
                 android:id="@+id/textViewRecipe"
                 android:layout_width="match_parent"
@@ -56,26 +71,8 @@
                 android:autoSizeTextType="uniform"
                 android:autoSizeMinTextSize="12sp"
                 android:autoSizeMaxTextSize="18sp"/>
-
-            <TextView
-                android:id="@+id/textViewYoutubeLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
         </LinearLayout>
     </ScrollView>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButtonAddMeal"
-        android:layout_margin="8dp"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="end|bottom"
-        android:backgroundTint="?attr/colorPrimary"
-        android:foregroundTint="?attr/colorOnPrimary"
-        android:contentDescription="@string/add_meal"
-        android:foreground="@drawable/ic_add_meal"
-        android:foregroundGravity="center"/>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

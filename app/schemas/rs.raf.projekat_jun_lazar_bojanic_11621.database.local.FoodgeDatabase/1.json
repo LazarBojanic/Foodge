@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c001253d790684f8c389d5dfaca80c11",
+    "identityHash": "37e00821be552278b8feec3fec365aa8",
     "entities": [
       {
         "tableName": "service_user",
@@ -63,7 +63,7 @@
       },
       {
         "tableName": "personal_meal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idMeal` TEXT, `strMeal` TEXT, `mealType` TEXT, `instructions` TEXT, `recipe` TEXT, `strYoutube` TEXT, `mealImagePath` TEXT, `dateOfPrep` TEXT, `strCategory` TEXT, `strIngredient` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `strMeal` TEXT, `strCategory` TEXT, `mealType` TEXT, `strInstructions` TEXT, `recipe` TEXT, `strYoutube` TEXT, `mealImagePath` TEXT, `dateOfPrep` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -72,14 +72,14 @@
             "notNull": false
           },
           {
-            "fieldPath": "idMeal",
-            "columnName": "idMeal",
+            "fieldPath": "strMeal",
+            "columnName": "strMeal",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "strMeal",
-            "columnName": "strMeal",
+            "fieldPath": "strCategory",
+            "columnName": "strCategory",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -90,8 +90,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "instructions",
-            "columnName": "instructions",
+            "fieldPath": "strInstructions",
+            "columnName": "strInstructions",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -118,18 +118,6 @@
             "columnName": "dateOfPrep",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "strCategory",
-            "columnName": "strCategory",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "strIngredient",
-            "columnName": "strIngredient",
-            "affinity": "TEXT",
-            "notNull": false
           }
         ],
         "primaryKey": {
@@ -145,7 +133,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c001253d790684f8c389d5dfaca80c11')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '37e00821be552278b8feec3fec365aa8')"
     ]
   }
 }

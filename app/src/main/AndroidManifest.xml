@@ -30,6 +30,9 @@
             android:name=".activity.RemoteMealDetailsActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.PersonalMealDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main" />

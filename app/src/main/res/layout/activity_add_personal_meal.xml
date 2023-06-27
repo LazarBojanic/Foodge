@@ -19,8 +19,8 @@
             android:layout_gravity="center"
             android:src="@drawable/placeholder_image_small" />
 
-        <EditText
-            android:id="@+id/editTextMealImagePath"
+        <TextView
+            android:id="@+id/textViewMealImagePath"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
@@ -41,6 +41,34 @@
             android:textAlignment="center"
             android:inputType="text"
             android:hint="@string/meal_name"/>
+
+        <TextView
+            android:id="@+id/textViewStrCategoryLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/category"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/editTextStrCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/category"/>
+
+        <TextView
+            android:id="@+id/textViewMealTypeLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/meal_type_breakfast_lunch_dinner"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/editTextMealType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/meal_type_breakfast_lunch_dinner"/>
 
         <TextView
             android:id="@+id/textViewStrYoutubeLabel"
@@ -75,6 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textSize="20sp"
                 android:inputType="date"
                 android:hint="@string/date_of_prep" />
 
@@ -82,33 +111,19 @@
                 android:id="@+id/buttonShowDatePicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pick_date_of_prep" />
+                android:text="@string/pick_date" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textViewMealTypeLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/meal_type_breakfast_lunch_dinner"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/editTextMealType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/meal_type_breakfast_lunch_dinner"/>
-
-        <TextView
-            android:id="@+id/textViewInstructionsLabel"
+            android:id="@+id/textViewStrInstructionsLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/instructions"
             android:textSize="16sp" />
 
         <EditText
-            android:id="@+id/editTextInstructions"
+            android:id="@+id/editTextStrInstructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/instructions"
@@ -117,8 +132,6 @@
             android:autoSizeTextType="uniform"
             android:autoSizeMinTextSize="12sp"
             android:autoSizeMaxTextSize="18sp"/>
-
-        <!-- Add labels and EditTexts for the remaining fields below -->
 
         <TextView
             android:id="@+id/textViewRecipeLabel"
@@ -137,34 +150,6 @@
             android:autoSizeTextType="uniform"
             android:autoSizeMinTextSize="12sp"
             android:autoSizeMaxTextSize="18sp"/>
-
-        <TextView
-            android:id="@+id/textViewStrCategoryLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/category"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/editTextStrCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/category"/>
-
-        <TextView
-            android:id="@+id/textViewStrIngredientLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/main_ingredient"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/editTextStrIngredient"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/main_ingredient"/>
 
         <LinearLayout
             android:layout_width="match_parent"

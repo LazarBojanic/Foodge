@@ -52,7 +52,7 @@
     <string name="personalMeals">Personal Meals</string>
     <string name="extraMeal">EXTRA_MEAL</string>
     <string name="meal_name">Meal Name</string>
-    <string name="pick_date_of_prep">Pick Date of Prep</string>
+    <string name="pick_date">Pick Date</string>
     <string name="meal_type_breakfast_lunch_dinner">Meal Type (Breakfast, Lunch, Dinner)</string>
     <string name="instructions">Instructions</string>
     <string name="recipe">Recipe</string>

@@ -89,9 +89,9 @@ public class PersonalMealsActivity extends AppCompatActivity {
     }
 
     private void initializeListeners() {
-        personalMealListAdapter.setOnPersonalMealClickListener(meal -> {
-            Intent intent = new Intent(this, RemoteMealDetailsActivity.class);
-            intent.putExtra(String.valueOf(R.string.extraIdMeal), meal.getIdMeal());
+        personalMealListAdapter.setOnPersonalMealClickListener(personalMeal -> {
+            Intent intent = new Intent(this, PersonalMealDetailsActivity.class);
+            intent.putExtra(String.valueOf(R.string.extraPersonalMeal), personalMeal);
             startActivity(intent);
         });
         editTextSearchCategory.addTextChangedListener(new TextWatcher() {

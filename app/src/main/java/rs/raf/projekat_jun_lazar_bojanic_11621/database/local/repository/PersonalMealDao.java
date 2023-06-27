@@ -23,7 +23,7 @@ public interface PersonalMealDao {
     Observable<List<PersonalMeal>> getAllPersonalMealsByName(String strMeal);
     @Query("SELECT * FROM personal_meal WHERE strCategory LIKE '%' || :strCategory || '%'")
     Observable<List<PersonalMeal>> getAllPersonalMealsByCategory(String strCategory);
-    @Query("SELECT * FROM personal_meal WHERE strIngredient LIKE '%' || :strIngredient || '%'")
+    @Query("SELECT * FROM personal_meal WHERE recipe LIKE '%' || :strIngredient || '%'")
     Observable<List<PersonalMeal>> getAllPersonalMealsByIngredient(String strIngredient);
     @Insert
     Single<Long> addPersonalMeal(PersonalMeal personalMeal);

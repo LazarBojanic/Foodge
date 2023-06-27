@@ -4,18 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.sql.Date;
+import java.io.File;
 import java.time.Instant;
+import java.util.Date;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -25,29 +35,23 @@ import rs.raf.projekat_jun_lazar_bojanic_11621.database.remote.model.Meal;
 import rs.raf.projekat_jun_lazar_bojanic_11621.util.DateConverter;
 import rs.raf.projekat_jun_lazar_bojanic_11621.util.PlaceHolders;
 import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.AddPersonalMealActivityViewModel;
+import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.RemoteMealDetailsActivityViewModel;
 
 public class AddPersonalMealActivity extends AppCompatActivity {
     private AddPersonalMealActivityViewModel addPersonalMealActivityViewModel;
+    private Meal receivedMeal;
     private ImageView imageViewMealImage;
-    private EditText editTextMealImagePath;
+    private TextView textViewMealImagePath;
     private EditText editTextStrMeal;
-    private TextView textViewStrYoutubeLabel;
+    private EditText editTextStrCategory;
+    private EditText editTextMealType;
+    private EditText editTextStrInstructions;
+    private EditText editTextRecipe;
     private EditText editTextStrYoutube;
-    private TextView textViewDateOfPrepLabel;
     private EditText editTextDateOfPrep;
     private Button buttonShowDatePicker;
-    private EditText editTextMealType;
-    private TextView textViewInstructionsLabel;
-    private EditText editTextInstructions;
-    private TextView textViewRecipeLabel;
-    private EditText editTextRecipe;
-    private TextView textViewStrCategoryLabel;
-    private EditText editTextStrCategory;
-    private TextView textViewStrIngredientLabel;
-    private EditText editTextStrIngredient;
     private Button buttonConfirm;
     private Button buttonCancel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,26 +60,37 @@ public class AddPersonalMealActivity extends AppCompatActivity {
         initializeViews();
         initializeListeners();
         Intent intent = getIntent();
-        Meal receivedMeal = intent.getSerializableExtra(String.valueOf(R.string.extraMeal), Meal.class);
+        receivedMeal = intent.getSerializableExtra(String.valueOf(R.string.extraMeal), Meal.class);
         if(receivedMeal != null){
             PersonalMeal personalMeal = new PersonalMeal();
             personalMeal.setId(null);
-            personalMeal.setIdMeal(receivedMeal.getIdMeal());
             personalMeal.setStrMeal(receivedMeal.getStrMeal());
             personalMeal.setMealType("");
-            personalMeal.setInstructions(receivedMeal.getStrInstructions());
+            personalMeal.setStrInstructions(receivedMeal.getStrInstructions());
             personalMeal.setRecipe(receivedMeal.getRecipe());
             personalMeal.setStrYoutube(receivedMeal.getStrYoutube());
             personalMeal.setMealImagePath(receivedMeal.getStrMealThumb());
             personalMeal.setDateOfPrep(Date.from(Instant.now()));
             personalMeal.setStrCategory(receivedMeal.getStrCategory());
-            personalMeal.setStrIngredient(receivedMeal.getStrIngredient1());
             addPersonalMealActivityViewModel.getPersonalMealMutableLiveData().postValue(personalMeal);
-            if(receivedMeal.getStrMealThumb() != null){
-                Glide.with(this)
-                        .load(receivedMeal.getStrMealThumb())
-                        .error(PlaceHolders.getInstance().getPlaceHolderImage())
-                        .placeholder(PlaceHolders.getInstance().getPlaceHolderImage()).into(imageViewMealImage);
+        }
+        addPersonalMealActivityViewModel.getPersonalMealMutableLiveData().observe(this, personalMeal -> {
+            if(personalMeal.getMealImagePath() != null){
+                if(personalMeal.getMealImagePath().contains("http")){
+                    Glide.with(this)
+                            .load(personalMeal.getMealImagePath())
+                            .error(PlaceHolders.getInstance().getPlaceHolderImage())
+                            .placeholder(PlaceHolders.getInstance().getPlaceHolderImage())
+                            .into(imageViewMealImage);
+                }
+                else{
+                    File file = new File(personalMeal.getMealImagePath());
+                    Glide.with(this)
+                            .load(file)
+                            .error(PlaceHolders.getInstance().getPlaceHolderImage())
+                            .placeholder(PlaceHolders.getInstance().getPlaceHolderImage())
+                            .into(imageViewMealImage);
+                }
             }
             else{
                 Glide.with(this)
@@ -84,35 +99,27 @@ public class AddPersonalMealActivity extends AppCompatActivity {
                         .placeholder(PlaceHolders.getInstance().getPlaceHolderImage())
                         .into(imageViewMealImage);
             }
-            editTextMealImagePath.setText(personalMeal.getMealImagePath());
+            textViewMealImagePath.setText(personalMeal.getMealImagePath());
             editTextStrMeal.setText(personalMeal.getStrMeal());
+            editTextStrCategory.setText(personalMeal.getStrCategory());
             editTextMealType.setText(personalMeal.getMealType());
-            editTextInstructions.setText(personalMeal.getInstructions());
+            editTextStrInstructions.setText(personalMeal.getStrInstructions());
             editTextRecipe.setText(personalMeal.getRecipe());
             editTextStrYoutube.setText(personalMeal.getStrYoutube());
             editTextDateOfPrep.setText(DateConverter.fromDate(personalMeal.getDateOfPrep()));
-            editTextStrCategory.setText(personalMeal.getStrCategory());
-            editTextStrIngredient.setText(personalMeal.getStrIngredient());
-        }
+        });
     }
     private void initializeViews(){
         imageViewMealImage = findViewById(R.id.imageViewMealImage);
-        editTextMealImagePath = findViewById(R.id.editTextMealImagePath);
+        textViewMealImagePath = findViewById(R.id.textViewMealImagePath);
         editTextStrMeal = findViewById(R.id.editTextStrMeal);
-        textViewStrYoutubeLabel = findViewById(R.id.textViewStrYoutubeLabel);
+        editTextStrCategory = findViewById(R.id.editTextStrCategory);
+        editTextMealType = findViewById(R.id.editTextMealType);
+        editTextStrInstructions = findViewById(R.id.editTextStrInstructions);
+        editTextRecipe = findViewById(R.id.editTextRecipe);
         editTextStrYoutube = findViewById(R.id.editTextStrYoutube);
-        textViewDateOfPrepLabel = findViewById(R.id.textViewDateOfPrepLabel);
         editTextDateOfPrep = findViewById(R.id.editTextDateOfPrep);
         buttonShowDatePicker = findViewById(R.id.buttonShowDatePicker);
-        editTextMealType = findViewById(R.id.editTextMealType);
-        textViewInstructionsLabel = findViewById(R.id.textViewInstructionsLabel);
-        editTextInstructions = findViewById(R.id.editTextInstructions);
-        textViewRecipeLabel = findViewById(R.id.textViewRecipeLabel);
-        editTextRecipe = findViewById(R.id.editTextRecipe);
-        textViewStrCategoryLabel = findViewById(R.id.textViewStrCategoryLabel);
-        editTextStrCategory = findViewById(R.id.editTextStrCategory);
-        textViewStrIngredientLabel = findViewById(R.id.textViewStrIngredientLabel);
-        editTextStrIngredient = findViewById(R.id.editTextStrIngredient);
         buttonConfirm = findViewById(R.id.buttonConfirm);
         buttonCancel = findViewById(R.id.buttonCancel);
     }
@@ -120,32 +127,28 @@ public class AddPersonalMealActivity extends AppCompatActivity {
         buttonConfirm.setOnClickListener(v -> {
             PersonalMeal personalMeal = addPersonalMealActivityViewModel.getPersonalMealMutableLiveData().getValue();
             if (personalMeal != null) {
-                personalMeal.setMealImagePath(editTextMealImagePath.getText().toString().trim());
+                personalMeal.setId(null);
                 personalMeal.setStrMeal(editTextStrMeal.getText().toString().trim());
+                personalMeal.setStrCategory(editTextStrCategory.getText().toString().trim());
                 personalMeal.setMealType(editTextMealType.getText().toString().trim());
-                personalMeal.setInstructions(editTextInstructions.getText().toString().trim());
+                personalMeal.setStrInstructions(editTextStrInstructions.getText().toString().trim());
                 personalMeal.setRecipe(editTextRecipe.getText().toString().trim());
                 personalMeal.setStrYoutube(editTextStrYoutube.getText().toString().trim());
-                personalMeal.setStrCategory(editTextStrCategory.getText().toString().trim());
-                personalMeal.setStrIngredient(editTextStrIngredient.getText().toString().trim());
+                personalMeal.setMealImagePath(textViewMealImagePath.getText().toString().trim());
                 personalMeal.setDateOfPrep(DateConverter.fromString(editTextDateOfPrep.getText().toString().trim()));
                 addPersonalMealActivityViewModel.addPersonalMeal(personalMeal)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                () -> {
-                                    Log.d("ViewModel", "Personal meal added successfully");
-                                    finish();
-                                },
-                                throwable -> {
-                                    Log.e("ViewModel", "Error adding personal meal: ", throwable);
-                                }
-                        );
+                        .subscribe(() -> {
+                            finish(); // Finish the activity when the personal meal is added successfully
+                        });
             }
         });
         buttonCancel.setOnClickListener(v -> {
             finish();
         });
-    }
+        buttonShowDatePicker.setOnClickListener(v -> {
 
+        });
+    }
 }
