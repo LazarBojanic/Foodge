@@ -3,7 +3,9 @@ package rs.raf.projekat_jun_lazar_bojanic_11621.database.local.repository;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
@@ -28,8 +30,12 @@ public interface PersonalMealDao {
     Observable<List<PersonalMeal>> getAllPersonalMealsByIngredient(String strIngredient);
     @Insert
     Single<Long> addPersonalMeal(PersonalMeal personalMeal);
-    @Query("UPDATE personal_meal SET strMeal = :strMeal WHERE id = :id")
-    Completable updatePersonalMealById(Integer id, String strMeal);
+    @Query("UPDATE personal_meal SET strMeal = :strMeal, strCategory = :strCategory, mealType = :mealType, " +
+            "strInstructions = :strInstructions, recipe = :recipe, strYoutube = :strYoutube, " +
+            "mealImagePath = :mealImagePath, dateOfPrep = :dateOfPrep WHERE id = :id")
+    Completable updatePersonalMealById(Integer id, String strMeal, String strCategory, String mealType,
+                                   String strInstructions, String recipe, String strYoutube,
+                                   String mealImagePath, String dateOfPrep);
     @Query("DELETE FROM personal_meal WHERE id = :id")
     Completable deletePersonalMealById(Integer id);
     @Query("SELECT COUNT(*) AS personalMealCount, dateOfPrep " +
@@ -38,4 +44,5 @@ public interface PersonalMealDao {
             "GROUP BY dateOfPrep " +
             "ORDER BY dateOfPrep DESC")
     Observable<List<PersonalMealCountByDate>> getPersonalMealCountsByDate();
+
 }

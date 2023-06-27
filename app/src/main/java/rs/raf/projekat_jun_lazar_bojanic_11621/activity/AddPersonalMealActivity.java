@@ -154,7 +154,7 @@ public class AddPersonalMealActivity extends AppCompatActivity {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
-                            Toast.makeText(this, "Personal meal successfully added!", Toast.LENGTH_SHORT);
+                            Toast.makeText(this, "Personal meal successfully added!", Toast.LENGTH_SHORT).show();
                             finish(); // Finish the activity when the personal meal is added successfully
                         });
             }

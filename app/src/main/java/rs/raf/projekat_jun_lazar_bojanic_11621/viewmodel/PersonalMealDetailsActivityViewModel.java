@@ -6,15 +6,19 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import rs.raf.projekat_jun_lazar_bojanic_11621.FoodgeApp;
 import rs.raf.projekat_jun_lazar_bojanic_11621.activity.PersonalMealDetailsActivity;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.model.PersonalMeal;
+import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.repository.PersonalMealDao;
 
 public class PersonalMealDetailsActivityViewModel extends ViewModel {
     private MutableLiveData<PersonalMeal> fullPersonalMealLiveData;
-
+    private PersonalMealDao personalMealDao;
     public PersonalMealDetailsActivityViewModel(){
         fullPersonalMealLiveData = new MutableLiveData<>();
+        personalMealDao = FoodgeApp.getInstance().getLocalAppComponent().getPersonalMealDao();
     }
 
     public MutableLiveData<PersonalMeal> getFullPersonalMealLiveData() {
@@ -24,7 +28,7 @@ public class PersonalMealDetailsActivityViewModel extends ViewModel {
     public void setFullPersonalMealLiveData(MutableLiveData<PersonalMeal> fullPersonalMealLiveData) {
         this.fullPersonalMealLiveData = fullPersonalMealLiveData;
     }
-    public Observable<List<PersonalMeal>> fetchFullPersonalMealDetails(Integer id){
-        return null;
+    public Completable deletePersonalMealById(Integer id){
+        return personalMealDao.deletePersonalMealById(id);
     }
 }

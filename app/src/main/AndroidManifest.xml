@@ -27,10 +27,10 @@
             android:name=".activity.PersonalMealsActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.DeletePersonalMealActivity"
+            android:name=".activity.EditPersonalMealActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.EditPersonalMealActivity"
+            android:name=".activity.DeletePersonalMealActivity"
             android:exported="false" />
         <activity
             android:name=".activity.AddPersonalMealActivity"

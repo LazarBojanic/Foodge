@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.bumptech.glide.Glide;
 
 import java.io.File;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.model.PersonalMeal;
 import rs.raf.projekat_jun_lazar_bojanic_11621.util.DateConverter;
@@ -36,6 +39,8 @@ public class PersonalMealDetailsActivity extends AppCompatActivity {
     private TextView textViewDateOfPrep;
     private TextView textViewInstructions;
     private TextView textViewRecipe;
+    private Button buttonEditPersonalMeal;
+    private Button buttonDeletePersonalMeal;
     private PersonalMeal receivedPersonalMeal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,8 @@ public class PersonalMealDetailsActivity extends AppCompatActivity {
         textViewInstructions = findViewById(R.id.textViewInstructions);
         textViewRecipe = findViewById(R.id.textViewRecipe);
         textViewStrYoutube = findViewById(R.id.textViewStrYoutube);
+        buttonEditPersonalMeal = findViewById(R.id.buttonEditPersonalMeal);
+        buttonDeletePersonalMeal = findViewById(R.id.buttonDeletePersonalMeal);
         Intent intent = getIntent();
         receivedPersonalMeal = intent.getSerializableExtra(String.valueOf(R.string.extraPersonalMeal), PersonalMeal.class);
         personalMealDetailsActivityViewModel.getFullPersonalMealLiveData().postValue(receivedPersonalMeal);
@@ -60,7 +67,19 @@ public class PersonalMealDetailsActivity extends AppCompatActivity {
                 openYoutubeVideo(youtubeLink);
             }
         });
-
+        buttonEditPersonalMeal.setOnClickListener(v -> {
+            Intent editPersonalMealIntent = new Intent(this, EditPersonalMealActivity.class);
+            editPersonalMealIntent.putExtra(String.valueOf(R.string.extraPersonalMeal), personalMealDetailsActivityViewModel.getFullPersonalMealLiveData().getValue());
+            startActivity(editPersonalMealIntent);
+        });
+        buttonDeletePersonalMeal.setOnClickListener(v -> {
+            personalMealDetailsActivityViewModel.deletePersonalMealById(personalMealDetailsActivityViewModel.getFullPersonalMealLiveData().getValue().getId())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> {
+                        finish();
+                    });
+        });
         personalMealDetailsActivityViewModel.getFullPersonalMealLiveData().observe(this, personalMeal -> {
             if(personalMeal.getMealImagePath() != null){
                 if(personalMeal.getMealImagePath().contains("http")){
