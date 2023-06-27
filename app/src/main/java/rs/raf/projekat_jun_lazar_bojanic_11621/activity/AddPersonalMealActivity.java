@@ -1,11 +1,18 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -24,6 +31,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
 
@@ -52,6 +61,9 @@ public class AddPersonalMealActivity extends AppCompatActivity {
     private Button buttonShowDatePicker;
     private Button buttonConfirm;
     private Button buttonCancel;
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
+    private static final int CAMERA_REQUEST_CODE = 200;
+    private static final int GALLERY_REQUEST_CODE = 201;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,8 +159,79 @@ public class AddPersonalMealActivity extends AppCompatActivity {
         buttonCancel.setOnClickListener(v -> {
             finish();
         });
+        imageViewMealImage.setOnClickListener(v -> {
+            if (isCameraPermissionGranted()) {
+                openCamera();
+            } else {
+                requestCameraPermission();
+            }
+        });
         buttonShowDatePicker.setOnClickListener(v -> {
 
         });
     }
+    private boolean isCameraPermissionGranted() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestCameraPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
+    }
+
+    private void openCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CAMERA_REQUEST_CODE) {
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    Bitmap imageBitmap = (Bitmap) bundle.get("data");
+                    saveImage(imageBitmap);
+                }
+            } else if (requestCode == GALLERY_REQUEST_CODE) {
+                Uri selectedImageUri = data.getData();
+                if (selectedImageUri != null) {
+                    try {
+                        Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                        saveImage(imageBitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    private void saveImage(Bitmap imageBitmap) {
+        File imageFile = new File(getExternalFilesDir(null), "personal_meal_" + addPersonalMealActivityViewModel.getPersonalMealMutableLiveData().getValue().getStrMeal() + ".png");
+        try {
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+            PersonalMeal currentPersonalMeal = addPersonalMealActivityViewModel.getPersonalMealMutableLiveData().getValue();
+            currentPersonalMeal.setMealImagePath(imageFile.getAbsolutePath());
+            addPersonalMealActivityViewModel.getPersonalMealMutableLiveData().postValue(currentPersonalMeal);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
