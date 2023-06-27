@@ -41,48 +41,29 @@
             android:layout_marginTop="4dp"
             android:layout_marginHorizontal="4dp" />
 
-        <LinearLayout
-            android:id="@+id/linearSortOptions"
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/radioGroupOrderOptions"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="4dp"
-            android:layout_marginHorizontal="4dp">
-
-            <TextView
-                android:id="@+id/textSortLabel"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/radioButtonAsc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sort_by"
-                android:textSize="14sp"
-                android:layout_gravity="center"/>
+                android:text="@string/asc"
+                android:checked="true"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
 
-            <RadioGroup
-                android:id="@+id/radioGroupSortOptions"
-                android:layout_width="match_parent"
+            <RadioButton
+                android:id="@+id/radioButtonDesc"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/radioButtonName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/name"
-                    android:checked="true"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"/>
-
-                <RadioButton
-                    android:id="@+id/radioButtonCategory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/category"
-                    android:paddingStart="4dp"
-                    android:paddingEnd="4dp"/>
-
-            </RadioGroup>
-
-        </LinearLayout>
+                android:text="@string/desc"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"/>
+        </RadioGroup>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMealList"

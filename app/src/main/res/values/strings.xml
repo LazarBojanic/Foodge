@@ -62,4 +62,6 @@
     <string name="cancel">Cancel</string>
     <string name="meal_image_path">Meal Image Path</string>
     <string name="search_by_tag">Search by tag…</string>
+    <string name="asc">ASC</string>
+    <string name="desc">DESC</string>
 </resources>

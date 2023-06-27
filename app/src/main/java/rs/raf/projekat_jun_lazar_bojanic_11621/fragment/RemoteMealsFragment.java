@@ -22,9 +22,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,12 +60,15 @@ public class RemoteMealsFragment extends Fragment {
     private Button buttonViewPersonalMeals;
     private EditText editTextSearchName;
     private EditText editTextSearchTag;
-    ArrayAdapter<String> spinnerCategoryFilterAdapter;
-    ArrayAdapter<String> spinnerAreaFilterAdapter;
-    ArrayAdapter<String> spinnerIngredientFilterAdapter;
+    private ArrayAdapter<String> spinnerCategoryFilterAdapter;
+    private ArrayAdapter<String> spinnerAreaFilterAdapter;
+    private ArrayAdapter<String> spinnerIngredientFilterAdapter;
     private Button buttonPrevPage;
     private Button buttonNextPage;
-    RecyclerView recyclerViewMealList;
+    private RecyclerView recyclerViewMealList;
+    private RadioGroup radioGroupOrderOptions;
+    private RadioButton radioButtonAsc;
+    private RadioButton radioButtonDesc;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,14 +105,15 @@ public class RemoteMealsFragment extends Fragment {
         recyclerViewMealList.setLayoutManager(new LinearLayoutManager(requireActivity()));
         remoteMealListAdapter = new RemoteMealListAdapter(Collections.emptyList());
         recyclerViewMealList.setAdapter(remoteMealListAdapter);
+        radioGroupOrderOptions = view.findViewById(R.id.radioGroupOrderOptions);
+        radioButtonAsc = view.findViewById(R.id.radioButtonAsc);
+        radioButtonDesc = view.findViewById(R.id.radioButtonDesc);
     }
 
     private void initializeViewModel() {
         remoteMealsFragmentViewModel = new ViewModelProvider(this).get(RemoteMealsFragmentViewModel.class);
         remoteMealsFragmentViewModel.getRemoteMealListLiveData().observe(this, mealList -> {
-            for(Meal meal : mealList){
-                Log.i(String.valueOf(R.string.foodgeTag), meal.toString());
-            }
+            sortMealList(mealList, radioButtonAsc.isChecked(), radioButtonDesc.isChecked());
             currentPage = 1;
             List<Meal> mealsInPage = getItemsForPage(mealList, currentPage);
             remoteMealListAdapter.setMealListRemote(mealsInPage);
@@ -146,6 +153,16 @@ public class RemoteMealsFragment extends Fragment {
     }
 
     private void initializeListeners() {
+        radioButtonAsc.setOnClickListener(v -> {
+            List<Meal> mealList = remoteMealsFragmentViewModel.getRemoteMealListLiveData().getValue();
+            sortMealList(mealList, true, false);
+            remoteMealsFragmentViewModel.getRemoteMealListLiveData().postValue(mealList);
+        });
+        radioButtonDesc.setOnClickListener(v -> {
+            List<Meal> mealList = remoteMealsFragmentViewModel.getRemoteMealListLiveData().getValue();
+            sortMealList(mealList, false, true);
+            remoteMealsFragmentViewModel.getRemoteMealListLiveData().postValue(mealList);
+        });
         remoteMealListAdapter.setOnMealClickListener(meal -> {
             Intent intent = new Intent(requireActivity(), RemoteMealDetailsActivity.class);
             intent.putExtra(String.valueOf(R.string.extraIdMeal), meal.getIdMeal());
@@ -155,7 +172,6 @@ public class RemoteMealsFragment extends Fragment {
             Intent intent = new Intent(requireActivity(), PersonalMealsActivity.class);
             startActivity(intent);
         });
-
 
         spinnerCategoryFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -319,4 +335,16 @@ public class RemoteMealsFragment extends Fragment {
         buttonPrevPage.setEnabled(currentPage > 1);
         buttonNextPage.setEnabled(currentPage < pageCount);
     }
+    private void sortMealList(List<Meal> mealList, Boolean asc, Boolean desc) {
+        mealList.sort((meal1, meal2) -> {
+            if (asc) {
+                return meal1.getStrMeal().compareTo(meal2.getStrMeal());
+            } else if (desc) {
+                return meal2.getStrMeal().compareTo(meal1.getStrMeal());
+            } else {
+                return meal1.getStrMeal().compareTo(meal2.getStrMeal());
+            }
+        });
+    }
+
 }

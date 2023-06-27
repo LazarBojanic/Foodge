@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import java.util.Collections;
@@ -47,7 +48,10 @@ public class PersonalMealsActivity extends AppCompatActivity {
     private EditText editTextSearchName;
     private Button buttonPrevPage;
     private Button buttonNextPage;
-    RecyclerView recyclerViewMealList;
+    private RecyclerView recyclerViewMealList;
+    private RadioGroup radioGroupOrderOptions;
+    private RadioButton radioButtonAsc;
+    private RadioButton radioButtonDesc;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,15 +75,19 @@ public class PersonalMealsActivity extends AppCompatActivity {
         recyclerViewMealList.setLayoutManager(new LinearLayoutManager(this));
         personalMealListAdapter = new PersonalMealListAdapter(Collections.emptyList());
         recyclerViewMealList.setAdapter(personalMealListAdapter);
+        radioGroupOrderOptions = findViewById(R.id.radioGroupOrderOptions);
+        radioButtonAsc = findViewById(R.id.radioButtonAsc);
+        radioButtonDesc = findViewById(R.id.radioButtonDesc);
     }
 
     private void initializeViewModel() {
         personalMealsActivityViewModel = new ViewModelProvider(this).get(PersonalMealsActivityViewModel.class);
-        personalMealsActivityViewModel.getPersonalMealListLiveData().observe(this, mealList -> {
+        personalMealsActivityViewModel.getPersonalMealListLiveData().observe(this, personalMealList -> {
+            sortMealList(personalMealList, radioButtonAsc.isChecked(), radioButtonDesc.isChecked());
             currentPage = 1;
-            List<PersonalMeal> mealsInPage = getItemsForPage(mealList, currentPage);
+            List<PersonalMeal> mealsInPage = getItemsForPage(personalMealList, currentPage);
             personalMealListAdapter.setMealListLocal(mealsInPage);
-            pageCount = (int) Math.ceil((double) mealList.size() / PAGE_SIZE);
+            pageCount = (int) Math.ceil((double) personalMealList.size() / PAGE_SIZE);
             updatePaginationButtons();
         });
 
@@ -89,6 +97,16 @@ public class PersonalMealsActivity extends AppCompatActivity {
     }
 
     private void initializeListeners() {
+        radioButtonAsc.setOnClickListener(v -> {
+            List<PersonalMeal> personalMealList = personalMealsActivityViewModel.getPersonalMealListLiveData().getValue();
+            sortMealList(personalMealList, true, false);
+            personalMealsActivityViewModel.getPersonalMealListLiveData().postValue(personalMealList);
+        });
+        radioButtonDesc.setOnClickListener(v -> {
+            List<PersonalMeal> personalMealList = personalMealsActivityViewModel.getPersonalMealListLiveData().getValue();
+            sortMealList(personalMealList, false, true);
+            personalMealsActivityViewModel.getPersonalMealListLiveData().postValue(personalMealList);
+        });
         personalMealListAdapter.setOnPersonalMealClickListener(personalMeal -> {
             Intent intent = new Intent(this, PersonalMealDetailsActivity.class);
             intent.putExtra(String.valueOf(R.string.extraPersonalMeal), personalMeal);
@@ -182,5 +200,16 @@ public class PersonalMealsActivity extends AppCompatActivity {
     private void updatePaginationButtons() {
         buttonPrevPage.setEnabled(currentPage > 1);
         buttonNextPage.setEnabled(currentPage < pageCount);
+    }
+    private void sortMealList(List<PersonalMeal> personalMealList, Boolean asc, Boolean desc) {
+        personalMealList.sort((personalMeal1, personalMeal2) -> {
+            if (asc) {
+                return personalMeal1.getStrMeal().compareTo(personalMeal2.getStrMeal());
+            } else if (desc) {
+                return personalMeal2.getStrMeal().compareTo(personalMeal1.getStrMeal());
+            } else {
+                return personalMeal1.getStrMeal().compareTo(personalMeal2.getStrMeal());
+            }
+        });
     }
 }
