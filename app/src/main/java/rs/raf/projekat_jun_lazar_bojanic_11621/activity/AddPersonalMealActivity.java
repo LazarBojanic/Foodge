@@ -7,9 +7,11 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.ParseException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -36,7 +38,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -170,7 +174,33 @@ public class AddPersonalMealActivity extends AppCompatActivity {
             }
         });
         buttonShowDatePicker.setOnClickListener(v -> {
-
+            String currentDateString = editTextDateOfPrep.getText().toString().trim();
+            int currentYear, currentMonth, currentDay;
+            Calendar calendar = Calendar.getInstance();
+            try{
+                Date currentDate = DateConverter.fromString(currentDateString);
+                if(currentDate != null){
+                    calendar.setTime(currentDate);
+                }
+            }
+            catch (ParseException e){
+                calendar.setTime(Date.from(Instant.now()));
+            }
+            currentYear = calendar.get(Calendar.YEAR);
+            currentMonth = calendar.get(Calendar.MONTH);
+            currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                    (view, year, month, dayOfMonth) -> {
+                        String formattedMonth = String.format(Locale.getDefault(), "%02d", month + 1);
+                        String formattedDay = String.format(Locale.getDefault(), "%02d", dayOfMonth);
+                        String selectedDateString = year + "-" + formattedMonth + "-" + formattedDay;
+                        editTextDateOfPrep.setText(selectedDateString);
+                    },
+                    currentYear,
+                    currentMonth,
+                    currentDay
+            );
+            datePickerDialog.show();
         });
     }
     private boolean isCameraPermissionGranted() {

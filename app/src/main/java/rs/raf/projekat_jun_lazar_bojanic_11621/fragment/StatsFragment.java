@@ -1,7 +1,9 @@
 package rs.raf.projekat_jun_lazar_bojanic_11621.fragment;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -67,17 +69,20 @@ public class StatsFragment extends Fragment {
                     index++;
                 }
             }
-
             BarDataSet dataSet = new BarDataSet(entries, "Meal Counts");
+            dataSet.setValueTextColor(getResources().getColor(R.color.colorOnSecondary));
             dataSet.setColor(Color.CYAN);
             BarData barData = new BarData(dataSet);
 
             // Set custom labels on the x-axis
             XAxis xAxis = barChartStats.getXAxis();
+            xAxis.setTextSize(12);
+            xAxis.setTextColor(getResources().getColor(R.color.colorOnSecondary));
             xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
             xAxis.setLabelCount(labels.size());
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
+            barChartStats.getLegend().setTextColor(getResources().getColor(R.color.colorOnSecondary));
             barChartStats.setData(barData);
             barChartStats.getDescription().setEnabled(false);
             barChartStats.invalidate();
