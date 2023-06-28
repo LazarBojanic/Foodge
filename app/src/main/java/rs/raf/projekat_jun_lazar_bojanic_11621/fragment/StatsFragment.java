@@ -3,6 +3,7 @@ package rs.raf.projekat_jun_lazar_bojanic_11621.fragment;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -27,13 +30,16 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import rs.raf.projekat_jun_lazar_bojanic_11621.R;
+import rs.raf.projekat_jun_lazar_bojanic_11621.activity.LoginAndRegisterActivity;
 import rs.raf.projekat_jun_lazar_bojanic_11621.database.local.model.PersonalMealCountByDate;
 import rs.raf.projekat_jun_lazar_bojanic_11621.util.DateConverter;
 import rs.raf.projekat_jun_lazar_bojanic_11621.viewmodel.StatsFragmentViewModel;
 
 public class StatsFragment extends Fragment {
     private BarChart barChartStats;
+    private Button buttonLogout;
     private StatsFragmentViewModel statsFragmentViewModel;
 
     @Override
@@ -45,12 +51,14 @@ public class StatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stats, container, false);
         barChartStats = view.findViewById(R.id.barChartStats);
+        buttonLogout = view.findViewById(R.id.buttonLogout);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initializeListeners();
         initializeObservers();
         fetchInitialData();
     }
@@ -98,5 +106,16 @@ public class StatsFragment extends Fragment {
     private void fetchInitialData(){
         statsFragmentViewModel.updateChart();
     }
-
+    private void initializeListeners(){
+        buttonLogout.setOnClickListener(v -> {
+            statsFragmentViewModel.logout()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> {
+                        Toast.makeText(requireActivity(), "Logged out.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(requireActivity(), LoginAndRegisterActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    });
+        });
+    }
 }

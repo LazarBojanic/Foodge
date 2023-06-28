@@ -109,7 +109,7 @@ public class LoginAndRegisterActivity extends AppCompatActivity {
 
 
         buttonExit.setOnClickListener(v -> {
-            finish();
+            finishAffinity();
         });
 
     }
