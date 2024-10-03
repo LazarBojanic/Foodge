@@ -1,6 +1,4 @@
-# Foodge
-
-An app for tracking personal meals.
+An Android app for tracking personal meals.
 
 ![](FoodgeImage1.png)
 
