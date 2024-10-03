@@ -1,5 +1,7 @@
 # Foodge
 
+An app for tracking personal meals.
+
 ![](FoodgeImage1.png)
 
 ![](FoodgeImage2.png)
